@@ -11,3 +11,6 @@ data/logs/
 *.pem
 *.key
 *.egg-info/
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
