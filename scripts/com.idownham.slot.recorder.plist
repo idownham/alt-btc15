@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  launchd agent for the R1 order-book recorder (read-only): starts at login, restarts on crash.
+  Same pattern as Coin Toss's agent (alt-scalp/scripts/com.idownham.altscalp.recorder.plist).
+  Install:   cp scripts/com.idownham.slot.recorder.plist ~/Library/LaunchAgents/
+             launchctl load ~/Library/LaunchAgents/com.idownham.slot.recorder.plist
+  Uninstall: launchctl unload ~/Library/LaunchAgents/com.idownham.slot.recorder.plist
+             rm ~/Library/LaunchAgents/com.idownham.slot.recorder.plist
+  Runs from ~/code/alt/alt-btc15: don't move that folder without reinstalling.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.idownham.slot.recorder</string>
+    <key>WorkingDirectory</key>
+    <string>/Users/iandownham/code/alt/alt-btc15</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/iandownham/code/alt/alt-btc15/.venv/bin/python</string>
+        <string>-m</string>
+        <string>slot.recorder</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    <key>StandardOutPath</key>
+    <string>/Users/iandownham/code/alt/alt-btc15/data/recorder/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/iandownham/code/alt/alt-btc15/data/recorder/launchd.err.log</string>
+</dict>
+</plist>

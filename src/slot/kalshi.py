@@ -195,6 +195,10 @@ class KalshiClient:
         """The window trading now (status 'open' in the API's filter vocabulary)."""
         return next(self.windows(status="open", series_ticker=series_ticker), None)
 
+    def window(self, ticker: str) -> Window:
+        """One market by ticker (any status), e.g. to read its result after settlement."""
+        return parse_window(self._get(f"/markets/{ticker}")["market"])
+
     def historical_windows(self, series_ticker: str = SERIES) -> Iterator[Window]:
         """Markets settled before the historical cutoff, newest first."""
         params = {"series_ticker": series_ticker, "limit": 1000}
