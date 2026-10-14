@@ -221,6 +221,11 @@ class Recorder:
 
     # --- loop ----------------------------------------------------------------------------------
     def run(self, max_ticks: int | None = None) -> None:
+        # A restart (reboot, crash, launchd) is a gap too: measure it from the last stored activity.
+        last = self.store.db.execute(
+            "SELECT MAX(t) FROM (SELECT MAX(t_recv_ns) t FROM books UNION ALL SELECT MAX(t_recv_ns) FROM btc)").fetchone()[0]
+        if last is not None:
+            self.last_tick_ns = last
         self.store.event(self.clock(), "start", f"interval={self.interval}s depth={DEPTH}")
         self.store.commit()
         ticks = 0

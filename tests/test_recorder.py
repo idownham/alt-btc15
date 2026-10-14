@@ -179,3 +179,12 @@ def test_rate_limit_pauses_the_loop(setup):
     assert sleeps == [10.0]
     k.orderbook = original
     assert "rate-limit pauses (24 h)" in status(store)
+
+
+def test_restart_gap_is_logged_from_last_stored_snapshot(setup):
+    clock, k, store, rec = setup
+    rec.tick()
+    clock.advance(300)  # process stopped for 5 minutes, then a fresh Recorder starts on the same store
+    fresh = Recorder(k, FakeCoinbase(), store, clock=clock, sleep=lambda s: None)
+    fresh.run(max_ticks=1)
+    assert store.db.execute("SELECT seconds FROM gaps").fetchone()[0] == pytest.approx(300)
