@@ -13,3 +13,9 @@ favorite; D longshot fade. (E fair-value gaps later.)
 **Framing (Ian):** "This is definitely gambling but maybe fun. It's low risk and I can afford it. Just need to win
 more than we lose (after fees)."
 **Pending:** Ian to confirm the proposed go-live gate in `spec.md` before S2.
+
+## 2026-10-13 — Run on the laptop for now
+**Decision (Ian):** Slot Machine runs on his laptop, not Osprey's droplet. Replaces the earlier "paper phase may
+share Osprey's droplet" note. Live phase still requires its own server, decided at the go-live gate.
+**Consequence:** sleep/offline gaps will miss windows; every gap is logged so paper results stay honest. Shares the
+laptop's Kalshi rate budget with Coin Toss's recorder.

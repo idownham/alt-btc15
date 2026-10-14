@@ -43,7 +43,7 @@ with honest fills (where Kalshi book history is missing, say so and use conserva
 tune on the first 2/3, report on the last 1/3 only once. Output per strategy: trades, win rate vs break-even, net P&L
 after fees, worst day, max drawdown.
 
-**S2 — Live paper trader.** Runs 24/7 (Osprey's droplet is OK for paper). Polls Kalshi book + BTC price, runs every
+**S2 — Live paper trader.** Runs on Ian's laptop (owner decision 2026-10-13); gaps from sleep/offline are logged and excluded, not hidden. Polls Kalshi book + BTC price, runs every
 strategy simultaneously, logs every would-be order/fill/skip, enforces the caps exactly as live would.
 Daily report: per-strategy P&L, trades, win rate, cap hits.
 

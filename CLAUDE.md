@@ -30,9 +30,12 @@ Small money, capped risk, and an honest evidence trail. "No strategy beats fees"
 8. **Money as Decimal or integer cents**, never float.
 
 ## Infrastructure
-- Paper phase: may run on Osprey's droplet (`alt-arb`) as its own systemd service, own directory, own venv.
-  It must not touch alt-arb's files, service, or data. Keep Kalshi reads modest (Osprey shares the IP).
-- **Live phase: its own small server** (separate box, separate keys). Don't put trading keys on Osprey's droplet.
+- **Runs on Ian's laptop (macOS) for now** — owner decision 2026-10-13. Own venv, own launchd agent when it runs
+  continuously. It shares the laptop (and its IP) with Coin Toss's recorder: keep Kalshi reads modest and never
+  interfere with Coin Toss's launchd agent, files, or recording windows.
+- Laptop sleep/offline = missed windows. That's acceptable in paper mode; log every gap so results stay honest.
+- Do not deploy to Osprey's droplet. **Live phase gets its own small server** (separate box, separate keys) —
+  decided at the go-live gate, not before.
 - BTC price data: public exchange APIs (e.g., Coinbase) — no keys.
 
 ## Conventions
