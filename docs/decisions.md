@@ -60,3 +60,12 @@ minute 2; B's time exits and target/stop checks shift by one minute.
 so a minute-1 entry under the worst-in-minute rule would "fill" at ~$1.00, a price nobody could trade at.
 **Consequence:** A and B are tested one minute after open rather than at the open itself. Approved before any S1
 strategy result was seen (the pull was still running).
+
+## 2026-10-14 — Stop Slot Machine at S1
+**Decision (Ian):** stop the project at S1. No S2 paper trading and no live trading.
+**Evidence:** `docs/s1-results.md`. None of A–D passed the pre-registered out-of-sample test. A, B and C lose even with
+generous close-quote fills (mean per trade −$0.29, −$0.35, −$0.11; CIs below 0). D is ≈ 0 (−$0.13 harsh / +$0.03
+generous; CIs include 0).
+**Consequence:** the outcome is a well-evidenced "no edge after spread and fees" on KXBTC15M at 1-minute speed. No
+service was ever deployed, and no keys or order code exist. Code and data stay as the evidence trail. Reopening needs a
+new dated entry here.

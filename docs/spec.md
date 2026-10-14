@@ -1,5 +1,8 @@
 # alt-btc15 (Project Slot Machine) — Spec
 
+> **Status 2026-10-14: stopped at S1 by owner decision.** No strategy passed the out-of-sample backtest
+> (`docs/s1-results.md`). S2 and S3 below were not run.
+
 *Written 2026-10-13 from the planning chat. Owner: Ian Downham.*
 
 ## The market

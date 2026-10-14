@@ -98,3 +98,10 @@ optional extra evidence.
 **AI use + Ian's judgment:** Claude ran the pull, the backtest and the write-up under the pre-registered protocol.
 Ian approved the protocol inputs (model, C band, fill rule, caps, amendment 1) before results and asked for the
 train and test runs. *Pending:* Ian's response to the results.
+
+### 2026-10-14 — Project stopped at S1 ⭐ evidence → decision → consequence
+**Decision:** Ian chose to stop Slot Machine at S1 (decisions.md), following Claude's recommendation.
+**Evidence → consequence:** out-of-sample backtest shows no edge for A–D (`docs/s1-results.md`) → no paper or live
+phase → no money risked. The project's result is the evidence trail itself.
+**AI use + Ian's judgment:** Claude recommended stopping, with D-only paper as optional. Ian **accepted** the
+recommendation to stop and declined the optional D paper run.
