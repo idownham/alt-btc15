@@ -253,9 +253,13 @@ class Recorder:
             self.last_tick_ns = last
         self.store.event(self.clock(), "start", f"interval={self.interval}s depth={DEPTH}")
         self.store.commit()
+        # Ticks run on a fixed schedule (due, due + interval, ...), so sleep overshoot and slow ticks don't add up.
+        # Sleeping "interval minus this tick's work" drifted to ~1.055 s per tick (≈ 57 snapshots/min) under launchd
+        # (journal 2026-10-14). A tick that runs past its slot skips ahead to the next slot instead of bursting.
+        step = int(self.interval * 1e9)
+        due = self.clock()
         ticks = 0
         while max_ticks is None or ticks < max_ticks:
-            started = self.clock()
             self.tick()
             ticks += 1
             if self.k.rate_limits.count > self.seen_429:
@@ -263,9 +267,13 @@ class Recorder:
                 self.store.commit()
                 self.seen_429 = self.k.rate_limits.count
                 self.sleep(BACKOFF_429)
+                due = self.clock()
                 continue
-            elapsed = (self.clock() - started) / 1e9
-            self.sleep(max(0.0, self.interval - elapsed))
+            due += step
+            now = self.clock()
+            if now >= due:
+                due += ((now - due) // step + 1) * step
+            self.sleep((due - now) / 1e9)
 
 
 def status(store: Store) -> str:

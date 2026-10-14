@@ -120,8 +120,8 @@ These show how much the result depends on the queue model.
 - Coinbase stands in for BRTI in the fair-value model (M1 only; M2 uses no model).
 
 ## Clarifications — 2026-10-14 (CDT), while building the engine, before any analysis of recorded data
-These settle points the text above leaves open. They are not rule changes. Ian can overrule any of them before
-2026-10-28 05:00 UTC, as a dated amendment.
+These settle points the text above leaves open. They are not rule changes. **Accepted by Ian, 2026-10-14, all seven
+as written (decisions.md)**, before any analysis of recorded data.
 1. **Decision times.** M1 places at open+60, +90, …, +750 (24 rounds). M2 places at open+60 ("once") or open+60, +120,
    …, +720 ("every 60 s", 12 rounds). At close − 120 (open+780) every resting order is cancelled; nothing is placed then.
 2. **M1 "improve" with a spread under 2 ticks:** no quote that round. It does not fall back to joining.

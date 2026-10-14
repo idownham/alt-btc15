@@ -93,3 +93,20 @@ mean per traded window (≥ 50 traded windows); pass = capped test net > 0 **and
 **Consequence:** no analysis of the recorded book or tape before 2026-10-28 05:00 UTC except data-health checks. Any
 change from here needs a dated amendment with its reason, recorded before new results are seen. A pass would still
 not permit trading; paper trading a maker strategy needs its own decision.
+
+## 2026-10-14 — R1 clarifications 1–7 accepted as written
+**Decision (Ian):** accept all seven clarifications in `docs/r1-maker-preregistration.md` (decision times; no M1
+"improve" quote on spreads under 2 ticks; cancel-before-place with budget reserved during cancel latency; tape
+complete = no `error:trades` within 300 s after close; BTC coverage at each M1 decision and lookback point; capped
+windows priced at filled cost + fees with the CI on capped results; date guard until 2026-10-28 05:00 UTC).
+**Consequence:** they are now part of the approved pre-registration, not open points. Accepted before any analysis of
+the recorded data (health checks only).
+
+## 2026-10-14 — Recorder: fixed 1-second schedule; no result backfill
+**Evidence (health check, 23:37 UTC):** consecutive book snapshots were ~1.055 s apart (≈ 57 per minute), so a window
+with no outage would cover only ~94.8% of its seconds, just under the pre-registration's ≥ 95% usable-window rule.
+Window `KXBTC15M-26OCT141630` (the first in the data range) has no result: its result read fell inside the rename downtime.
+**Decision (Ian):** fix the loop to tick on a fixed 1-s schedule. **Do not** add a result backfill.
+**Consequence:** the recorder was restarted 2026-10-14 18:40:30 CDT (stop/start events logged; the ~1 s pause is under the 5 s gap threshold). Windows recorded before the fix keep
+their real coverage and are judged by the ≥ 95% rule as written. The rule is unchanged. `KXBTC15M-26OCT141630` will
+count as unusable (no result). Future restarts that straddle a result read can lose that window's result the same way.

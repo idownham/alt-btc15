@@ -217,3 +217,41 @@ def test_restart_gap_is_logged_from_last_stored_snapshot(setup):
     fresh = Recorder(k, FakeCoinbase(), store, clock=clock, sleep=lambda s: None)
     fresh.run(max_ticks=1)
     assert store.db.execute("SELECT seconds FROM gaps").fetchone()[0] == pytest.approx(300)
+
+
+def test_ticks_keep_a_fixed_schedule_despite_slow_work(setup):
+    clock, k, store, rec = setup
+    sleeps = []
+
+    def sleep(s):
+        sleeps.append(round(s, 3))
+        clock.advance(s + 0.05)  # every sleep overshoots by 50 ms
+
+    rec.sleep = sleep
+    original = rec.tick
+
+    def slow_tick():
+        original()
+        clock.advance(0.2)  # each tick's work takes 200 ms
+
+    rec.tick = slow_tick
+    start = clock()
+    rec.run(max_ticks=60)
+    assert sleeps[0] == 0.8
+    assert all(s == 0.75 for s in sleeps[1:])  # overshoot is absorbed, not accumulated
+    assert (clock() - start) / 1e9 == pytest.approx(60.05)
+
+
+def test_tick_that_overruns_its_slot_skips_ahead(setup):
+    clock, k, store, rec = setup
+    sleeps = []
+    rec.sleep = lambda s: (sleeps.append(round(s, 3)), clock.advance(s))
+    original = rec.tick
+
+    def very_slow_tick():
+        original()
+        clock.advance(2.3)
+
+    rec.tick = very_slow_tick
+    rec.run(max_ticks=2)
+    assert sleeps == [0.7, 0.7]  # next slot after 2.3 s is 3.0 s, never a negative sleep or a burst

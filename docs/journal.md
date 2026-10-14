@@ -171,3 +171,18 @@ rebuilt (88 tests pass), the plist template updated to the new path, and the age
 book snapshots within seconds. This gap falls inside the maker pre-registration's data range and is in the `gaps`
 table like any other gap (not checked against the usable-window rules here).
 **AI use + Ian's judgment:** Ian asked for the rename; Claude ran it in an HQ session.
+
+### 2026-10-14 (evening) — Recorder health check; drift fixed; clarifications accepted ⭐ evidence → decision → consequence
+**Work:** health-only check of the R1 recording (no prices, P&L or strategy numbers looked at). Agent running; newest
+snapshot 0.2 s old; ~200 MB in 3.5 h (≈ 1.4 GB/day), 657 GB free. A **network outage from about 17:34 to 18:00 CDT**
+(DNS failures, longest gap 962 s) is in the `gaps` table. The recorder recovered by itself.
+**Evidence:** snapshots were ~1.055 s apart (≈ 57/min), so even a window with no outage would cover only ~94.8% of its
+seconds, under the pre-registration's ≥ 95% usable-window rule. The first in-range window
+(`KXBTC15M-26OCT141630`) has no result because its result read fell inside the rename downtime.
+**Decision → consequence:** Ian chose to fix the loop to a fixed 1-s schedule (2 new tests, 90 pass), keep the 95%
+rule unchanged, and **not** backfill results. The recorder was restarted at 18:40:30 CDT. Afterwards: 60 snapshots in each full
+minute, mean spacing 1.000 s, 0 errors. Windows recorded before the fix keep their real coverage and are judged
+by the rule as written. `…141630` will count as unusable.
+**Clarifications:** Claude walked Ian through all seven. Ian **accepted** all seven as written (decisions.md).
+**AI use + Ian's judgment:** Claude found the drift and the missing result during the health check and recommended both
+fixes. Ian **accepted** the schedule fix and **rejected** the backfill.
