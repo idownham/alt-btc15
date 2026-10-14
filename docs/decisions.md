@@ -52,3 +52,11 @@ unchanged). **Not decided:** whether the $100 total cap is per strategy or share
 **Consequence:** each strategy's ledger halts permanently on its own at −$100 net (until a dated owner reset entry
 naming it). The other strategies keep running. With the per-strategy $25/day cap (entry above), each strategy is
 capped exactly as it would be if it ran alone. **Not decided:** cap scope for live (S3), set at the go-live gate.
+
+## 2026-10-13 — S1 pre-registration amendment 1 approved (A and B enter in minute 2)
+**Decision (Ian):** approve amendment 1 in `docs/s1-preregistration.md`. A and B decide at open + 60 s and fill in
+minute 2; B's time exits and target/stop checks shift by one minute.
+**Evidence:** in a 119-window plumbing pull, 85% of minute-1 candles carry the empty opening book (ask ≥ 99¢, bid ≤ 1¢),
+so a minute-1 entry under the worst-in-minute rule would "fill" at ~$1.00, a price nobody could trade at.
+**Consequence:** A and B are tested one minute after open rather than at the open itself. Approved before any S1
+strategy result was seen (the pull was still running).

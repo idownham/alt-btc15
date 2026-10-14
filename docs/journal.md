@@ -65,3 +65,12 @@ Open: $100 total scope in paper, live cap scope, second BTC source, maker-fee ch
 ### 2026-10-13 (later) — Ian's review of S0, part 4
 **Decision:** $100 total cap also per strategy in paper (decisions.md). Ian's call, extending part 3.
 Open: live cap scope (at the gate), second BTC source, maker-fee check, go-live gate.
+
+### 2026-10-13 (later) — S1 started ⭐ evidence → decision → consequence
+**Work:** pre-registered S1 (`docs/s1-preregistration.md`, committed before any data). Built the paced history puller and
+the backtest engine (61 variants) with tests. Full pull of 12,690 windows (Jun 1 – Oct 12) running.
+**Evidence → decision → consequence:** the trial pull showed minute 1 carries the empty opening book (ask ≈ $1.00 in 85%
+of windows) → amendment 1: A/B enter in minute 2 → **Ian approved** it before any results.
+**Observation:** the worst-ask-to-worst-bid gap within a minute averages 15–17¢, so the approved fill rule will be
+harsh on A/B. The pre-registered close-price sensitivity will measure how much.
+**AI use + Ian's judgment:** Claude designed the grids, split and amendment; Ian **accepted** amendment 1.

@@ -86,6 +86,7 @@ Coinbase is only a proxy for BRTI. There is no depth history, so ≤ $5 is assum
 Sizing uses the fill price. Within-minute timing is unknown.
 
 ## Amendment 1 — 2026-10-13 (CDT), after a 3-day plumbing test pull, before any strategy code or results
+*Approved by Ian 2026-10-13 (decisions.md), before any S1 strategy results.*
 **Finding:** Kalshi's candles run k = 1..15 (no candle ends at the open). Candle 1 includes the open itself: in the
 trial pull (119 windows, 2026-08-12 → 08-15), 85% of candle-1s have a yes_ask high ≥ 99¢ and a bid low ≤ 1¢ from the
 empty book at the open. Minutes 2–10 had none. Under the worst-in-minute rule, any minute-1 entry would "fill" at
