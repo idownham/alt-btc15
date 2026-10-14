@@ -74,9 +74,10 @@ Same caps. Circuit breaker vs paper results.
 ## Risk caps (hard-coded; same in paper and live)
 $5 max per trade · $25 max net loss per day (Chicago calendar day) · $100 max total net loss → permanent halt
 until owner resets. Kill switch: `STOP` file or `KILL=1`.
-**Scope in paper (S2), Ian 2026-10-13:** the $25/day cap applies **per strategy**: each strategy has its own ledger,
-so one strategy's losing day doesn't halt the others. $5/trade applies to every order. The kill switch stops
-everything. Still open: whether the $100 total is per strategy or shared in paper, and the cap scope for live (S3).
+**Scope in paper (S2), Ian 2026-10-13:** the $25/day and $100 total caps both apply **per strategy**: each strategy
+has its own ledger, so one strategy's losing day, or its permanent halt, doesn't stop the others. A strategy that hits
+$100 stays halted until Ian records a dated reset for it in decisions.md. $5/trade applies to every order. The kill
+switch stops everything. Still open: cap scope for live (S3).
 
 ## Go-live gate (pre-registered — PROPOSED, Ian to confirm before S2 starts)
 Per strategy, all of:

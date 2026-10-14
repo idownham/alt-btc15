@@ -61,3 +61,7 @@ second BTC source, maker-fee check, go-live gate.
 ### 2026-10-13 (later) — Ian's review of S0, part 3
 **Decision:** $25/day cap applies per strategy in paper (decisions.md). Claude proposed it; Ian **accepted**.
 Open: $100 total scope in paper, live cap scope, second BTC source, maker-fee check, go-live gate.
+
+### 2026-10-13 (later) — Ian's review of S0, part 4
+**Decision:** $100 total cap also per strategy in paper (decisions.md). Ian's call, extending part 3.
+Open: live cap scope (at the gate), second BTC source, maker-fee check, go-live gate.

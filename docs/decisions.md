@@ -46,3 +46,9 @@ pessimistic. S2 paper trading uses real depth-walked fills. Recorded before any 
 stop the others from collecting paper evidence.
 **Consequence:** S2 keeps one `RiskManager` ledger per strategy for the daily cap ($5/trade and the kill switch are
 unchanged). **Not decided:** whether the $100 total cap is per strategy or shared in paper; cap scope for live (S3).
+
+## 2026-10-13 — Paper trading: $100 total cap per strategy
+**Decision (Ian):** in paper trading (S2), the $100 total loss cap is also applied **separately to each strategy**.
+**Consequence:** each strategy's ledger halts permanently on its own at −$100 net (until a dated owner reset entry
+naming it). The other strategies keep running. With the per-strategy $25/day cap (entry above), each strategy is
+capped exactly as it would be if it ran alone. **Not decided:** cap scope for live (S3), set at the go-live gate.
