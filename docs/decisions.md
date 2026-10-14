@@ -39,3 +39,10 @@ Resting exits fill only when trades go through the price. Depth is assumed suffi
 history**, so rule 5's depth walk is impossible in a backtest.
 **Consequence:** a scoped exception to CLAUDE.md rule 5 for S1 only (noted there). Backtest P&L is biased
 pessimistic. S2 paper trading uses real depth-walked fills. Recorded before any S1 results exist.
+
+## 2026-10-13 — Paper trading: $25/day cap per strategy
+**Decision (Ian):** in paper trading (S2), the $25 daily loss cap is applied **separately to each strategy**.
+**Reason:** strategies A–D run at the same time and are gated separately. A shared cap would let one strategy's bad day
+stop the others from collecting paper evidence.
+**Consequence:** S2 keeps one `RiskManager` ledger per strategy for the daily cap ($5/trade and the kill switch are
+unchanged). **Not decided:** whether the $100 total cap is per strategy or shared in paper; cap scope for live (S3).
