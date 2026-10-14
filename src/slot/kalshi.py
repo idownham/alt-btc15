@@ -137,7 +137,8 @@ class Window:
 
 def parse_window(m: dict[str, Any]) -> Window:
     strike = m.get("floor_strike")
-    exp = m.get("expiration_value") or None
+    # Usually "83628.01", but two Aug/Sep 2026 markets sent "77,362.10".
+    exp = (m.get("expiration_value") or "").replace(",", "") or None
     return Window(
         ticker=m["ticker"],
         open_time=parse_ts(m["open_time"]),

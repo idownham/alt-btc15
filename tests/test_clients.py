@@ -47,6 +47,10 @@ def test_float_noise_in_strike_is_rounded_to_cents():
     assert parse_window(NOISY).strike == D("67345.40")
 
 
+def test_expiration_value_with_thousands_separator():
+    assert parse_window({**NOISY, "expiration_value": "77,362.10"}).expiration_value == D("77362.10")
+
+
 def test_book_asks_and_walk():
     book = parse_book("T", BOOK_FP)
     assert book.best_yes_bid_e4 == 7800 and book.best_yes_ask_e4 == 7900
