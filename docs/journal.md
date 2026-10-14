@@ -74,3 +74,27 @@ of windows) → amendment 1: A/B enter in minute 2 → **Ian approved** it befor
 **Observation:** the worst-ask-to-worst-bid gap within a minute averages 15–17¢, so the approved fill rule will be
 harsh on A/B. The pre-registered close-price sensitivity will measure how much.
 **AI use + Ian's judgment:** Claude designed the grids, split and amendment; Ian **accepted** amendment 1.
+
+---
+
+## 2026-10-13/14 — S1 backtest: no strategy passes ⭐ evidence → decision → consequence
+
+**Work:** Pulled 12,690 windows (Jun 1 – Oct 12) of Kalshi 1-min candles plus Coinbase 1-min BTC (paced, 2 rate-limit
+hits in total). Ran all 61 pre-registered variants on train (`docs/s1-train.md`), committed the selection
+(`654d73e`), then ran the 4 chosen variants once on test (`docs/s1-test.md`). Write-up: `docs/s1-results.md`.
+
+**Evidence (test, out-of-sample):** capped net P&L A −$98.09, B −$95.91, C −$95.97 (each hit the $100 halt), D −$35.71.
+Uncapped mean per trade: A −$0.81, B −$1.18, C −$0.27, D −$0.13. With generous close-quote fills (sensitivity only):
+A −$0.29, B −$0.35, C −$0.11 (all CIs below 0), D +$0.03 (CI includes 0).
+
+**Observation:** A–C lose even with generous fills. The 1-min bid/ask swing (~15–17¢) is bigger than B's +10¢
+target. For C, the market is calibrated (90–97¢ favorites won 93–95%), and the price usually runs to 99¢+ before a
+1-min bot can fill. Self-critique: the pre-registered selection rule (best *capped* P&L) was weak, because nearly
+every variant hit the $100 halt. It doesn't change the verdict: every A–C variant lost even uncapped.
+
+**Decision:** pending Ian. Claude recommends stopping at S1 (a valid "no edge" result), with D-only paper trading as
+optional extra evidence.
+
+**AI use + Ian's judgment:** Claude ran the pull, the backtest and the write-up under the pre-registered protocol.
+Ian approved the protocol inputs (model, C band, fill rule, caps, amendment 1) before results and asked for the
+train and test runs. *Pending:* Ian's response to the results.
