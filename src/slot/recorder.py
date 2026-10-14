@@ -7,8 +7,11 @@ Every `interval` seconds (default 1 s):
 - one GET /markets/orderbooks for the window trading now: top `DEPTH` levels per side, with
   send/receive timestamps;
 - one Coinbase BTC-USD ticker (a different host, so not counted against Kalshi).
-Every `TRADES_EVERY` seconds: the window's new trades (deduplicated by trade_id). At each window change:
-a final trade sweep for the old window, and later its settlement result.
+Every `TRADES_EVERY` seconds: the window's new trades (deduplicated by trade_id). The tape is fetched
+oldest-first in `TRADE_CHUNK`-second slices, at most one slice per tick, resuming from the last stored
+trade. After a restart or a window change, catching up is spread over many ticks, not done in one burst
+(a one-burst catch-up hit Kalshi's rate limit on 2026-10-14). After a window closes: the rest of its
+tape, then its settlement result.
 
 Kalshi load is about 1.1-1.3 requests/s, against a Basic limit of ~20/s shared with Coin Toss's recorder.
 On any 429 the recorder pauses `BACKOFF_429` seconds, so it gives way instead of competing. Gaps longer
@@ -40,6 +43,7 @@ log = logging.getLogger(__name__)
 DB_PATH = Path(__file__).resolve().parents[2] / "data" / "recorder" / "book.sqlite"
 DEPTH = 20  # levels kept per side; a <= $5 order never reaches past the top few
 TRADES_EVERY = 10.0
+TRADE_CHUNK = 60  # seconds of tape per trade request (1-2 pages even in the busiest minute)
 RESULT_DELAY = 60.0  # read a closed window's result this long after close (settlement takes ~5 s)
 GAP_SECONDS = 5.0
 BACKOFF_429 = 10.0
@@ -141,6 +145,7 @@ class Recorder:
         self.last_tick_ns: int | None = None
         self.next_trades_ns = 0
         self.trade_cursor: dict[str, int] = {}  # ticker -> min_ts (s) for the next trade fetch
+        self.sweeping: dict[str, int] = {}  # closed tickers whose tape is still being fetched -> close (s)
         self.pending_results: dict[str, int] = {}  # ticker -> time (ns) to read its result
         self.seen_429 = 0
 
@@ -154,9 +159,7 @@ class Recorder:
         self._step("window", self._ensure_window, now)
         if self.current is not None and now / 1e9 < self.current.close_time.timestamp():
             self._step("book", self._record_book)
-            if now >= self.next_trades_ns:
-                self._step("trades", self._record_trades, self.current.ticker)
-                self.next_trades_ns = now + int(TRADES_EVERY * 1e9)
+        self._step("trades", self._trades_step, now)
         self._step("btc", self._record_btc)
         for ticker, due in list(self.pending_results.items()):
             if now >= due:
@@ -178,13 +181,13 @@ class Recorder:
         if w is None or not (w.open_time.timestamp() <= now_s < w.close_time.timestamp()):
             return  # between windows for a moment; try next tick
         if self.current is not None and w.ticker != self.current.ticker:
-            old = self.current.ticker
-            self._record_trades(old)  # final sweep of the closed window's tape
-            self.pending_results[old] = now + int(RESULT_DELAY * 1e9)
+            old = self.current
+            self.sweeping[old.ticker] = int(old.close_time.timestamp())  # finish its tape over the next ticks
+            self.pending_results[old.ticker] = now + int(RESULT_DELAY * 1e9)
         if self.current is None or w.ticker != self.current.ticker:
             self.current = w
             self.store.window(w, now)
-            self.trade_cursor.setdefault(w.ticker, int(w.open_time.timestamp()) - 1)
+            self.trade_cursor.setdefault(w.ticker, self._stored_cursor(w))
             self.next_trades_ns = 0
             log.info("recording %s (strike %s)", w.ticker, w.strike)
 
@@ -196,14 +199,37 @@ class Recorder:
         if book is not None:
             self.store.book(book, t_send, t_recv)
 
-    def _record_trades(self, ticker: str) -> None:
-        since = self.trade_cursor.get(ticker)
-        rows = list(self.k.trades(ticker, min_ts=since))
+    def _stored_cursor(self, w: Window) -> int:
+        """Resume the tape from the newest stored trade (after a restart), else from the window's open."""
+        newest = self.store.db.execute("SELECT MAX(created_time) FROM trades WHERE ticker = ?", (w.ticker,)).fetchone()[0]
+        if newest:
+            return int(datetime.fromisoformat(newest.replace("Z", "+00:00")).timestamp())
+        return int(w.open_time.timestamp()) - 1
+
+    def _trades_step(self, now: int) -> None:
+        """At most one trade request per tick: finish closed windows first, then keep up with the current one."""
+        for ticker, close in list(self.sweeping.items()):
+            end = min(self.trade_cursor.get(ticker, close) + TRADE_CHUNK, close)
+            self._fetch_trades(ticker, end)
+            if end >= close:
+                del self.sweeping[ticker]
+                self.trade_cursor.pop(ticker, None)
+            return
+        if self.current is None:
+            return
+        now_s = int(now / 1e9)
+        cursor = self.trade_cursor[self.current.ticker]
+        behind = now_s - cursor > TRADE_CHUNK
+        if (behind or now >= self.next_trades_ns) and now_s > cursor:
+            self._fetch_trades(self.current.ticker, min(cursor + TRADE_CHUNK, now_s))
+            self.next_trades_ns = now + int(TRADES_EVERY * 1e9)
+
+    def _fetch_trades(self, ticker: str, end: int) -> None:
+        start = self.trade_cursor[ticker]
+        rows = list(self.k.trades(ticker, min_ts=start, max_ts=end))
         added = self.store.trades(rows)
-        if rows:
-            newest = max(datetime.fromisoformat(r["created_time"].replace("Z", "+00:00")) for r in rows)
-            self.trade_cursor[ticker] = int(newest.timestamp()) - 1  # 1 s overlap; trade_id dedupes
-        log.debug("%s: %d trades fetched, %d new", ticker, len(rows), added)
+        self.trade_cursor[ticker] = end  # the next slice starts at `end` again; trade_id dedupes the overlap
+        log.debug("%s: trades %d..%d: %d fetched, %d new", ticker, start, end, len(rows), added)
 
     def _record_btc(self) -> None:
         tick = self.cb.ticker()
@@ -214,7 +240,6 @@ class Recorder:
         if w.result:
             self.store.window(w, self.clock())
             del self.pending_results[ticker]
-            self.trade_cursor.pop(ticker, None)
             log.info("%s settled %s at %s", ticker, w.result, w.expiration_value)
         else:
             self.pending_results[ticker] = self.clock() + int(RESULT_DELAY * 1e9)

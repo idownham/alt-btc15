@@ -60,8 +60,9 @@ class FakeKalshi:
 
     def trades(self, ticker, min_ts=None, max_ts=None):
         self.calls.append(("trades", ticker, min_ts))
+        ts = lambda t: datetime.fromisoformat(t["created_time"].replace("Z", "+00:00")).timestamp()  # noqa: E731
         return iter([t for t in self.tape.get(ticker, [])
-                     if min_ts is None or datetime.fromisoformat(t["created_time"].replace("Z", "+00:00")).timestamp() >= min_ts])
+                     if (min_ts is None or ts(t) >= min_ts) and (max_ts is None or ts(t) <= max_ts)])
 
     def window(self, ticker):
         self.calls.append(("window", ticker))
@@ -110,8 +111,34 @@ def test_trades_are_polled_every_10_s_and_deduplicated(setup):
     for _ in range(25):
         rec.tick()
         clock.advance(1)
-    assert sum(c[0] == "trades" for c in k.calls) == 3  # t = 0, 10, 20 s
+    assert sum(c[0] == "trades" for c in k.calls) == 3  # at 30, 40 and 50 s into the window
     assert count(store, "trades") == 1
+
+
+def trade_calls(k):
+    return [c for c in k.calls if c[0] == "trades"]
+
+
+def test_catch_up_is_one_chunk_per_tick_oldest_first(setup):
+    clock, k, store, rec = setup
+    clock.advance(570)  # recorder starts 10 minutes into the window: 600 s of tape to catch up
+    for _ in range(12):
+        rec.tick()
+        clock.advance(1)
+    starts = [c[2] for c in trade_calls(k)]
+    assert starts == sorted(starts) and len(starts) == 10  # 10 one-minute slices; the 10-s cadence resumes after
+    assert all(b - a == 60 for a, b in zip(starts[:10], starts[1:10]))
+
+
+def test_restart_resumes_tape_from_newest_stored_trade(setup):
+    clock, k, store, rec = setup
+    k.tape["KXBTC15M-W0"] = [trade("a", "KXBTC15M-W0", T0 + timedelta(seconds=25))]
+    rec.tick()
+    clock.advance(5)
+    fresh = Recorder(k, FakeCoinbase(), store, clock=clock, sleep=lambda s: None)
+    k.calls.clear()
+    fresh.tick()
+    assert trade_calls(k)[0][2] == int((T0 + timedelta(seconds=25)).timestamp())
 
 
 def test_window_roll_sweeps_old_tape_then_reads_result(setup):
@@ -119,8 +146,10 @@ def test_window_roll_sweeps_old_tape_then_reads_result(setup):
     rec.tick()
     clock.advance(900)  # into window 1
     k.tape["KXBTC15M-W0"] = [trade("late", "KXBTC15M-W0", T0 + timedelta(seconds=899))]
-    rec.tick()
-    assert rec.current.ticker == "KXBTC15M-W1"
+    for _ in range(16):  # the old window's remaining tape, one 60-s slice per tick
+        rec.tick()
+        clock.advance(1)
+    assert rec.current.ticker == "KXBTC15M-W1" and not rec.sweeping
     assert store.db.execute("SELECT COUNT(*) FROM trades WHERE trade_id='late'").fetchone()[0] == 1
     k.settled.add("KXBTC15M-W0")
     clock.advance(61)
