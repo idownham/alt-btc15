@@ -1,6 +1,6 @@
 # S1 backtest — pre-registration
 
-*Written and committed 2026-10-14, **before any S1 data was pulled or any strategy result was seen**. Strategy
+*Written and committed 2026-10-13 (CDT), **before any S1 data was pulled or any strategy result was seen**. Strategy
 parameters, the split, the selection rule and the metrics below are fixed. Any change gets a dated note here with the
 reason before new results are looked at. The go-live gate in `spec.md` is not touched by this document.*
 
@@ -84,3 +84,16 @@ how much the harsh fill rule costs. It is clearly labeled and not an S1 result.
 ## Known limitations (stated up front)
 Coinbase is only a proxy for BRTI. There is no depth history, so ≤ $5 is assumed to fill. Whole contracts only.
 Sizing uses the fill price. Within-minute timing is unknown.
+
+## Amendment 1 — 2026-10-13 (CDT), after a 3-day plumbing test pull, before any strategy code or results
+**Finding:** Kalshi's candles run k = 1..15 (no candle ends at the open). Candle 1 includes the open itself: in the
+trial pull (119 windows, 2026-08-12 → 08-15), 85% of candle-1s have a yes_ask high ≥ 99¢ and a bid low ≤ 1¢ from the
+empty book at the open. Minutes 2–10 had none. Under the worst-in-minute rule, any minute-1 entry would "fill" at
+~$1.00. That is an artifact of the opening book, not a price anyone could trade at.
+**Change:** A and B decide at **T0 + 60 s** (with data up to then) and fill in **minute 2**. B's time exits shift by
+one minute (1 min → exit in minute 3; 5 min → minute 7), and targets/stops are checked from minute 3. The signals use
+S and the lean at T0 + 60 s. Nothing else changes. The sentence above about "the candle ending exactly at the open" is
+wrong and is replaced by this note.
+**Also seen (plumbing, not results):** the average range between the worst ask and the worst bid within one minute
+was about 15–17¢ in minutes 2–10, so the worst-in-minute rule costs a lot per round trip. That is the point of a
+pessimistic rule, and the pre-registered close-price sensitivity will show how much.

@@ -232,6 +232,18 @@ class KalshiClient:
         path = f"/series/{SERIES}/markets/{ticker}/candlesticks"
         return self._get(path, params).get("candlesticks") or []
 
+    def historical_candlesticks(self, ticker: str, start_ts: int, end_ts: int) -> list[dict[str, Any]]:
+        """1-min candles for a market settled before the historical cutoff."""
+        params = {"start_ts": start_ts, "end_ts": end_ts, "period_interval": 1}
+        return self._get(f"/historical/markets/{ticker}/candlesticks", params).get("candlesticks") or []
+
+    def batch_candlesticks(self, tickers: list[str], start_ts: int, end_ts: int) -> dict[str, list[dict[str, Any]]]:
+        """1-min candles for several live-era markets in one request. Kalshi caps a request at 10,000
+        candles in total (markets x minutes), and pre-cutoff markets come back empty."""
+        params = {"market_tickers": ",".join(tickers), "start_ts": start_ts, "end_ts": end_ts, "period_interval": 1}
+        data = self._get("/markets/candlesticks", params)
+        return {m["market_ticker"]: m.get("candlesticks") or [] for m in data.get("markets", [])}
+
     def _paginate(self, path: str, params: dict[str, Any], key: str) -> Iterator[dict[str, Any]]:
         params = dict(params)
         while True:
