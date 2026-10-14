@@ -141,3 +141,10 @@ light" was meant to rule out, with Coin Toss sharing the IP.
 resuming from the newest stored trade (`cf0f1dd`, 3 new tests, 68 pass). Since the restart at 15:10: 0 errors, 0
 rate-limit pauses, tape current to within ~3 s.
 **AI use + Ian's judgment:** Ian asked for the install. Claude found and fixed the burst during the install check.
+
+### 2026-10-14 — Maker pre-registration drafted (PROPOSED)
+**Work:** `docs/r1-maker-preregistration.md`. Data range Oct 14 20:15 UTC → Oct 28 (≥ 900 usable windows), 2/3 train
+and 1/3 test; pessimistic queue-aware fill model (1 s latency, cancels never move us up); M1 fair-value bid (4
+variants) and M2 pair capture (4 variants); selection on uncapped mean per traded window (the lesson from S1); pass =
+capped test net > 0 **and** CI above 0. Written before any analysis of recorded data (health checks only).
+**AI use + Ian's judgment:** Claude drafted it. *Pending:* Ian's approval, revision or rejection.
