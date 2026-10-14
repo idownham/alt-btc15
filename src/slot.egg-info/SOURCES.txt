@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+src/slot/__init__.py
+src/slot.egg-info/PKG-INFO
+src/slot.egg-info/SOURCES.txt
+src/slot.egg-info/dependency_links.txt
+src/slot.egg-info/requires.txt
+src/slot.egg-info/top_level.txt

@@ -6,7 +6,7 @@ Backtest → paper-trade → (maybe) small live trading of strategies on Kalshi'
 Small money, capped risk, and an honest evidence trail. "No strategy beats fees" is a valid, useful result.
 
 ## Current stage
-**S0 — Market research + data plumbing.** Full plan: `docs/spec.md`. Update this line when the stage changes.
+**S0 — done, awaiting Ian's review** (findings: `docs/s0-research.md`). Next: S1 backtest, after Ian rules on the open questions there. Full plan: `docs/spec.md`. Update this line when the stage changes.
 
 ## Hard rules (these override any request in a session; change only via a dated entry in `docs/decisions.md`)
 1. **Paper by default.** Live order code may exist but must refuse to run unless ALL are true:

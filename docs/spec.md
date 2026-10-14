@@ -32,6 +32,10 @@ at this horizon), with S = live BTC, τ = time left, σ = recent realized volati
 **S0 must confirm exactly how Kalshi settles** (which index, single print vs. average over the final seconds) and the
 model must match it — this matters most for strategy C.
 
+> **S0 finding (2026-10-13):** settlement = simple average of the 60 one-second BRTI prints before close; target =
+> the same average before open. `N(d)` with τ = time left overstates uncertainty late in the window (use τ − 40 s for
+> τ ≥ 60 s, and the running average for τ < 60 s). Proposed model and C entry band: `docs/s0-research.md` §7, pending Ian.
+
 ## Stages
 **S0 — Research + plumbing (no trading).** Settlement rules/source; fee type + multiplier for `KXBTC15M`; tick
 size, min size; market listing/open/close timing; historical data available (Kalshi trades/candlesticks for past
