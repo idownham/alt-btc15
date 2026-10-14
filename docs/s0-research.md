@@ -194,7 +194,7 @@ Probability YES when BTC (and the running average) is **$30 above target**:
   https://assets.kalshi.com/regulatory/product-certifications/CRYPTO.pdf
 - Kalshi docs: https://docs.kalshi.com/getting_started/fee_rounding, https://docs.kalshi.com/getting_started/rate_limits
 - Kalshi fee schedule (blocked to automated fetch here): https://kalshi.com/fee-schedule,
-  https://kalshi.com/docs/kalshi-fee-schedule.pdf; fee coefficient as recorded in `../alt-scalp/docs/s0-research.md` §1
+  https://kalshi.com/docs/kalshi-fee-schedule.pdf; fee coefficient as recorded in `../project-coin-toss/docs/s0-research.md` §1
 - CF Benchmarks BRTI: https://www.cfbenchmarks.com/data/indices/BRTI (methodology consultation, Apr 2026:
   https://www.cfbenchmarks.com/blog/announcement-of-consultation-on-changes-to-the-cme-cf-real-time-index-methodology)
 - Third-party fee explainer (cross-check only): https://pm.wiki/fr/learn/prediction-market-arbitrage-after-fees

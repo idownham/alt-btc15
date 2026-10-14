@@ -162,3 +162,12 @@ per-variant caps, and count/train/test phases. The test phase runs only after th
 before 2026-10-28 05:00 UTC**, enforcing the approval in code. Seven interpretation points are recorded as dated
 clarifications in the pre-registration, before any data. Estimated full run: ~10–15 min.
 **AI use + Ian's judgment:** Claude built it; Ian asked for it. *Pending:* Ian may overrule any clarification before Oct 28.
+
+### 2026-10-14 — Folder renamed to `project-slot-machine`
+**Work:** HQ folder rename (HQ `docs/decisions.md`): this checkout moved from `~/code/alt/alt-btc15` to
+`~/code/alt/project-slot-machine` (GitHub repo name unchanged). The recorder agent was unloaded at 15:30 CT, `.venv`
+rebuilt (88 tests pass), the plist template updated to the new path, and the agent reinstalled and loaded at 15:31.
+**Observation:** the recorder logged one gap of 69 s (15:30:43–15:31:51), the planned downtime, and resumed recording
+book snapshots within seconds. This gap falls inside the maker pre-registration's data range and is in the `gaps`
+table like any other gap (not checked against the usable-window rules here).
+**AI use + Ian's judgment:** Ian asked for the rename; Claude ran it in an HQ session.

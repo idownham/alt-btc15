@@ -41,7 +41,7 @@ Small money, capped risk, and an honest evidence trail. "No strategy beats fees"
 
 ## Conventions
 - Python 3.11+, `pyproject.toml`, `.venv/`, `pytest`. Small, focused commits.
-- Kalshi client/fee model may be copied from `../alt-arb` or `../alt-scalp`; note the source commit.
+- Kalshi client/fee model may be copied from `../project-osprey` (repo alt-arb) or `../project-coin-toss` (repo alt-scalp); note the source commit.
 - `docs/journal.md`: dated class-journal entry at the end of every session (work, evidence, observation, decision,
   AI use + Ian's judgment). `docs/decisions.md`: dated owner decisions.
 - `docs/manual-trades.md`: Ian's hand trades from his phone (kept separate from bot results).
