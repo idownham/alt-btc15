@@ -1,0 +1,10 @@
+# alt-btc15 — Project Slot Machine
+
+Automated trading research on Kalshi's 15-minute Bitcoin "up or down" markets (`KXBTC15M`).
+A new market opens every 15 minutes, 24/7. The system backtests strategies, paper-trades them live with full logs,
+and can only trade real money — with hard caps — after a strategy passes a pre-set gate and the owner records the decision.
+
+Honest framing: this is small-stakes, capped-risk speculation. The goal is to find out, with evidence, whether any
+strategy wins more than it loses after fees.
+
+See `docs/spec.md` (plan) and `CLAUDE.md` (rules). Part of the `alt` portfolio — see [alt-hq](https://github.com/idownham/alt-hq).
