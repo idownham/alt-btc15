@@ -130,3 +130,14 @@ heavy (~48k trades per window), so storage is ~600 B per trade, an estimated 1�
 
 **AI use + Ian's judgment:** Claude listed the three untested ideas and recommended idea 1 with a delayed start (after
 Coin Toss's recordings, Oct 22). Ian **accepted** idea 1 and **overrode** the timing: run now, kept light.
+
+### 2026-10-14 — launchd agent installed; restart burst found and fixed ⭐ evidence → decision → consequence
+**Work:** at Ian's request, installed the launchd agent (`com.idownham.slot.recorder`, starts at login, restarts on crash)
+and stopped the plain background copy. Restart gaps are now logged from the last stored snapshot (`5ab6675`).
+**Evidence:** on the switch to launchd (15:08), the recorder re-fetched the whole window's tape from the open in one
+burst and hit Kalshi's rate limit 8 times in about 80 s (each followed by the 10 s back-off). That's the load "kept
+light" was meant to rule out, with Coin Toss sharing the IP.
+**Decision → consequence:** the tape is now fetched oldest-first in 60 s slices, at most one request per tick,
+resuming from the newest stored trade (`cf0f1dd`, 3 new tests, 68 pass). Since the restart at 15:10: 0 errors, 0
+rate-limit pauses, tape current to within ~3 s.
+**AI use + Ian's judgment:** Ian asked for the install. Claude found and fixed the burst during the install check.
