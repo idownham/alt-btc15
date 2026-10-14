@@ -105,3 +105,8 @@ train and test runs. *Pending:* Ian's response to the results.
 phase → no money risked. The project's result is the evidence trail itself.
 **AI use + Ian's judgment:** Claude recommended stopping, with D-only paper as optional. Ian **accepted** the
 recommendation to stop and declined the optional D paper run.
+
+### 2026-10-14 — Class summary written
+**Work:** one-page project summary for the class: `docs/class-summary.md` (question, timeline with commit links, the four
+evidence → decision → consequence steps, results, lessons, AI use + Ian's judgment). Drawn only from this journal,
+decisions.md and git history.
