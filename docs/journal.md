@@ -154,3 +154,11 @@ capped test net > 0 **and** CI above 0. Written before any analysis of recorded 
 analysis of the recorded data. Analysis is planned for after 2026-10-28 05:00 UTC.
 **AI use + Ian's judgment:** Claude drafted it and flagged four optional changes (window minimum and end date, the CI
 requirement, the quoting cutoff, early exit for one-sided M2 fills). Ian **accepted** it unchanged.
+
+### 2026-10-14 — Maker backtest engine built (synthetic data only)
+**Work:** `src/slot/maker.py`: usable-window checks, the queue-aware fill model with 3 sensitivity modes, M1 and M2,
+per-variant caps, and count/train/test phases. The test phase runs only after the selection is committed.
+`tests/test_maker.py`: 21 tests on synthetic data (88 total pass). The engine **refuses to read the real recording
+before 2026-10-28 05:00 UTC**, enforcing the approval in code. Seven interpretation points are recorded as dated
+clarifications in the pre-registration, before any data. Estimated full run: ~10–15 min.
+**AI use + Ian's judgment:** Claude built it; Ian asked for it. *Pending:* Ian may overrule any clarification before Oct 28.

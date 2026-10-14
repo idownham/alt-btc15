@@ -118,3 +118,21 @@ These show how much the result depends on the queue model.
 - Trade timestamps are Kalshi's and snapshot timestamps are ours (≈ 50 ms apart); the 1 s latency covers this.
 - Two weeks of one market in one season (Oct 2026); a BTC volatility regime change could flip the result.
 - Coinbase stands in for BRTI in the fair-value model (M1 only; M2 uses no model).
+
+## Clarifications — 2026-10-14 (CDT), while building the engine, before any analysis of recorded data
+These settle points the text above leaves open. They are not rule changes. Ian can overrule any of them before
+2026-10-28 05:00 UTC, as a dated amendment.
+1. **Decision times.** M1 places at open+60, +90, …, +750 (24 rounds). M2 places at open+60 ("once") or open+60, +120,
+   …, +720 ("every 60 s", 12 rounds). At close − 120 (open+780) every resting order is cancelled; nothing is placed then.
+2. **M1 "improve" with a spread under 2 ticks:** no quote that round. It does not fall back to joining.
+3. **Requoting:** every decision cancels all resting orders (effective after the latency) before placing new ones.
+   A new order's size reserves budget for the unfilled remainder of orders still being cancelled, so a window's
+   filled cost can never exceed $5.
+4. **"Tape fetched through the close":** a window is unusable if any `error:trades` event falls within 300 s after its
+   close (the recorder's sweep period).
+5. **"BTC covered":** a Coinbase tick within the 5 s before the decision time, and before each of the 15 one-minute
+   lookback points, for every M1 decision time.
+6. **Caps:** each traded window is one position whose max loss is its actual filled cost plus fees, the same convention
+   as S1. The 95% CI in the pass rule is computed on the capped traded windows (the official numbers are capped).
+7. **Guard:** `slot.maker` refuses to read the real recording before 2026-10-28 05:00 UTC. `--end` can only move the end
+   later, and only after an amendment naming the new date is written here.
