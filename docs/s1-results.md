@@ -55,6 +55,23 @@ Uncapped, so every window counts (the capped runs stop at the $100 halt, so they
 4. **Limits:** Coinbase is only a proxy for BRTI; there is no depth history; 1-min resolution only. A faster bot with a
    BRTI feed is a different strategy (spec E) and a speed race against professionals.
 
+## What S1 did *not* test (added 2026-10-14)
+"No edge found" covers the four strategies as designed, at 1-minute speed, entering by taking an existing price. These
+remain untested:
+
+1. **Resting limit orders (maker side).** KXBTC15M charges makers **no fee** (`quadratic` series). Every S1 entry paid
+   the spread and the taker fee. A strategy that rests bids and earns the spread was never tested. It needs a **live
+   order-book recorder**, because Kalshi keeps no book history. This is the closest idea to Coin Toss's thesis (maker
+   on sports markets), so Coin Toss's result is an early signal for it.
+2. **Speed: second-level reaction with the official index.** A bot reacting within seconds, ideally on the licensed
+   CF Benchmarks BRTI feed, is a different strategy (spec E). It competes on speed with professional firms, and the
+   feed costs money. Unlikely to suit $5 trades.
+3. **D with more data.** D's result (−$0.13 harsh / +$0.03 generous per trade, both CIs include 0, 284 trades) can't
+   tell a small edge from none. Settling it needs weeks of paper trading with real depth-walked fills and 1-s prices.
+
+Any of these means **reopening** the project: a new dated entry in `decisions.md` and a new pre-registration before
+any data, like S1.
+
 ## What this means for the plan (decisions for Ian, not made here)
 
 - This is a well-evidenced "no edge" result for A–C, which `CLAUDE.md` calls a valid, useful outcome.
