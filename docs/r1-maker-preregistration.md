@@ -2,7 +2,7 @@
 
 *Written 2026-10-14 (CDT) by Claude, **before any analysis of the recorded book or tape**. Up to now the recorded data
 has only had health checks (row counts, gaps, errors, schema).*
-**Status: PROPOSED.** Ian approves, revises or rejects it. Nothing below is analyzed until an approval is recorded in
+**Status: APPROVED by Ian, 2026-10-14, as written (decisions.md).** Before approval, Ian could approve, revise or reject it. Nothing below is analyzed until an approval is recorded in
 `docs/decisions.md`. Changes after approval get a dated amendment here, with the reason, before new results are seen.
 
 Context: S1 tested only entries that take an existing price and found no edge for A–D (`docs/s1-results.md`).

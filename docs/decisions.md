@@ -84,3 +84,12 @@ can't be backtested without book history, which Kalshi doesn't keep.
 - **No maker-strategy analysis of the recorded data until a maker pre-registration is committed** (strategy rules,
   fill model from the recorded book/tape, split, pass rule). Looking at data health (gaps, row counts) is fine.
 - S1's verdict on A–D stands. The go-live gate is unchanged.
+
+## 2026-10-14 — R1 maker pre-registration approved as written
+**Decision (Ian):** approve `docs/r1-maker-preregistration.md` as written, with no changes. That fixes: data range Oct 14
+20:15 UTC → Oct 28 05:00 UTC (≥ 900 usable windows, extended by whole days if short); 2/3 train / 1/3 test, test run
+once; pessimistic queue-aware fill model; M1 fair-value bid and M2 pair capture (8 variants); selection on uncapped
+mean per traded window (≥ 50 traded windows); pass = capped test net > 0 **and** 95% CI above 0.
+**Consequence:** no analysis of the recorded book or tape before 2026-10-28 05:00 UTC except data-health checks. Any
+change from here needs a dated amendment with its reason, recorded before new results are seen. A pass would still
+not permit trading; paper trading a maker strategy needs its own decision.

@@ -148,3 +148,9 @@ and 1/3 test; pessimistic queue-aware fill model (1 s latency, cancels never mov
 variants) and M2 pair capture (4 variants); selection on uncapped mean per traded window (the lesson from S1); pass =
 capped test net > 0 **and** CI above 0. Written before any analysis of recorded data (health checks only).
 **AI use + Ian's judgment:** Claude drafted it. *Pending:* Ian's approval, revision or rejection.
+
+### 2026-10-14 — Maker pre-registration approved
+**Decision:** Ian approved `docs/r1-maker-preregistration.md` as written (decisions.md). Approval came before any
+analysis of the recorded data. Analysis is planned for after 2026-10-28 05:00 UTC.
+**AI use + Ian's judgment:** Claude drafted it and flagged four optional changes (window minimum and end date, the CI
+requirement, the quoting cutoff, early exit for one-sided M2 fills). Ian **accepted** it unchanged.
