@@ -52,6 +52,18 @@ with honest fills (where Kalshi book history is missing, say so and use conserva
 tune on the first 2/3, report on the last 1/3 only once. Output per strategy: trades, win rate vs break-even, net P&L
 after fees, worst day, max drawdown.
 
+**S1 fill rule (approved by Ian 2026-10-13).** Kalshi has no order-book history, only 1-min candlesticks
+(yes_bid / yes_ask / trade OHLC). Every backtest fill uses the **worst price in that minute**:
+- buy YES at the minute's **yes_ask high**; buy NO at **1 − yes_bid low** (the worst NO ask);
+- sell YES at the minute's **yes_bid low**; sell NO at **1 − yes_ask high**;
+- entry and exit in the same minute: take the worse of the two possible orderings;
+- resting limit exits (B's +10¢) fill only if the minute's **trade high** (low, for NO) goes *past* the price, not just
+  touches it; check against the trade tape on a sample of windows;
+- prices snapped to the tick grid in force that day (`linear_cent` before 2026-03-17, `tapered_deci_cent` after);
+- depth is assumed enough for ≤ $5 orders. This is an assumption, stated in every S1 report, not a measurement;
+- fees: conservative taker fee (ceil to the cent per order) on every taking fill, none on settlement.
+S2 replaces all of this with real depth-walked fills from the recorded live book (rule 5).
+
 **S2 — Live paper trader.** Runs on Ian's laptop (owner decision 2026-10-13); gaps from sleep/offline are logged and excluded, not hidden. Polls Kalshi book + BTC price, runs every
 strategy simultaneously, logs every would-be order/fill/skip, enforces the caps exactly as live would.
 Daily report: per-strategy P&L, trades, win rate, cap hits.

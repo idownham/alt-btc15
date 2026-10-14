@@ -30,3 +30,12 @@ average-aware). Below 60 s, the remaining uncertainty is about the size of our C
 results were looked at.
 **Not decided here:** a separate "< 60 s" C variant; S1 fill assumption; risk-cap scope in paper; second BTC
 source; go-live gate (all still pending, s0-research §9).
+
+## 2026-10-13 — S1 backtest fills: worst price in the minute
+**Decision (Ian):** approve the conservative S1 fill rule (`docs/s0-research.md` §5, now in `spec.md` under S1).
+Buys fill at the worst ask of that minute, sells at the worst bid. Same-minute round trips take the worse ordering.
+Resting exits fill only when trades go through the price. Depth is assumed sufficient for ≤ $5 and stated as an assumption.
+**Evidence:** Kalshi serves 1-min candlesticks and the trade tape for every past window but **no order-book
+history**, so rule 5's depth walk is impossible in a backtest.
+**Consequence:** a scoped exception to CLAUDE.md rule 5 for S1 only (noted there). Backtest P&L is biased
+pessimistic. S2 paper trading uses real depth-walked fills. Recorded before any S1 results exist.

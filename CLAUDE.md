@@ -23,6 +23,7 @@ Small money, capped risk, and an honest evidence trail. "No strategy beats fees"
 5. **Honest fills.** Paper and backtest fills use the real ask (buys) / bid (sells) from the order book at that moment,
    walking depth for size; resting limit orders fill only when the trade tape shows trades through the price.
    P&L is always net of Kalshi fees for the series. No top-of-book shortcuts, no look-ahead.
+   *S1 exception (decisions.md 2026-10-13): no book history exists, so backtests use the worst-in-minute candle rule in `docs/spec.md`.*
 6. **Pre-registered gates are fixed.** The go-live gate in `docs/spec.md` is set before results; changes are recorded
    in `docs/decisions.md` with the reason *before* looking at new results.
 7. **Log everything.** Every signal, order, fill, cancel, skip (with reason), cap hit, and error is logged with UTC

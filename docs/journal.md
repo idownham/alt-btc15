@@ -49,3 +49,11 @@ the findings and the §9 proposals (accept / revise / reject).
 minute, where our price proxy, not BTC volatility, would decide the edge.
 **AI use + Ian's judgment:** Claude proposed the model and band; Ian **accepted** both. The other S0 proposals
 (fill assumption, cap scope, second BTC source, < 60 s variant) are still open.
+
+### 2026-10-13 (later) — Ian's review of S0, part 2 ⭐ evidence → decision → consequence
+**Decision:** Ian approved worst-price-in-minute fills for the S1 backtest (decisions.md, same date).
+**Evidence → consequence:** no Kalshi order-book history (S0 §5) → S1 uses the most pessimistic price in each
+1-min candle, a scoped exception to rule 5 → any S1 edge has to survive a deliberately harsh fill model. S2 measures
+real fills.
+**AI use + Ian's judgment:** Claude proposed the rule; Ian **accepted** it. Still open: risk-cap scope in paper,
+second BTC source, maker-fee check, go-live gate.
