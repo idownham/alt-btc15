@@ -16,9 +16,10 @@ momentum / mean reversion over the last 5–60 min, time of day, Kalshi's own op
 −$2.50 on a $5 stake) or a time limit, else hold to expiry. Variants to test: +5/+10/+15¢ targets; 10 s / 60 s /
 5 min / hold time limits; with and without a stop. Rough break-even with a symmetric ±10¢ stop ≈ 63%.
 
-**C. Late favorite (Ian's rule).** Near the end (e.g., ≤ 60–120 s left) when BTC is well past the target and the
-contract trades ~90–97¢, buy the favorite **only if model fair value exceeds the ask by a margin** (after fees).
-At 95¢, risking ~95¢ to win ~4.7¢ requires true probability > ~95.5%. The model is the whole edge here.
+**C. Late favorite (Ian's rule).** Entry only with **60–180 s left** (approved 2026-10-13, see decisions.md) when BTC is
+well past the target and the contract trades ~90–97¢; buy the favorite **only if model fair value exceeds the ask by a
+margin** (after fees). At 95¢, risking ~95¢ to win ~4.7¢ requires true probability > ~95.5%. The model is the whole
+edge here. Entries with < 60 s left are out of scope for C (there the edge is replicating BRTI, not BTC volatility).
 
 **D. Longshot fade.** Cheap contracts (≤ 10¢) late in the window may be overpriced by retail. Test selling/buying the
 other side when model fair value is well below the price. Pattern-level edge, not a speed race.
@@ -26,15 +27,19 @@ other side when model fair value is well below the price. Pattern-level edge, no
 **E. (Later) Fair-value gaps.** Trade whenever Kalshi lags the model by more than spread + fees. Likely a speed race
 vs professional bots; measure gap size/duration from our host before considering it.
 
-## Fair-value model
-Probability BTC ends above target K at expiry: digital-option style `P = N(d)`, `d = ln(S/K) / (σ·√τ)` (drift ≈ 0
-at this horizon), with S = live BTC, τ = time left, σ = recent realized volatility (test 5/15/60-min lookbacks).
-**S0 must confirm exactly how Kalshi settles** (which index, single print vs. average over the final seconds) and the
-model must match it — this matters most for strategy C.
+## Fair-value model (average-aware; approved by Ian 2026-10-13)
+Kalshi settles on the **simple average of the 60 one-second BRTI prints before close** vs a target K that is the same
+60-s average before open (S0 finding, `docs/s0-research.md` §1). With BTC treated as a driftless random walk:
 
-> **S0 finding (2026-10-13):** settlement = simple average of the 60 one-second BRTI prints before close; target =
-> the same average before open. `N(d)` with τ = time left overstates uncertainty late in the window (use τ − 40 s for
-> τ ≥ 60 s, and the running average for τ < 60 s). Proposed model and C entry band: `docs/s0-research.md` §7, pending Ian.
+`P(YES) = N((M − K) / sd)`, with σ$ = σ · S dollars per √second, and τ = seconds left:
+- **τ ≥ 60 s:** M = S (live BTC proxy), sd = σ$ · √(τ − 40)  (i.e. τ_eff = τ − 40 s)
+- **τ < 60 s:** M = [(60 − τ) · A_known + τ · S] / 60, sd = σ$ · √(τ³ / 10,800), where A_known is the average of
+  the proxy's 1-s prices already inside the final minute.
+
+σ = recent realized volatility of 1-min log returns (test 5/15/60-min lookbacks; tune on the first 2/3 of data only).
+S is a proxy (Coinbase; BRTI is not free), so proxy error is part of the model's error and is reported, not hidden.
+Outcomes in backtests always come from Kalshi's `result`, never from the proxy.
+*Replaces the single-print `N(d)`, `d = ln(S/K)/(σ·√τ)`, which overstates uncertainty late in the window.*
 
 ## Stages
 **S0 — Research + plumbing (no trading).** Settlement rules/source; fee type + multiplier for `KXBTC15M`; tick

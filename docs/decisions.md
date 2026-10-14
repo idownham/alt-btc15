@@ -19,3 +19,14 @@ more than we lose (after fees)."
 share Osprey's droplet" note. Live phase still requires its own server, decided at the go-live gate.
 **Consequence:** sleep/offline gaps will miss windows; every gap is logged so paper results stay honest. Shares the
 laptop's Kalshi rate budget with Coin Toss's recorder.
+
+## 2026-10-13 — Average-aware fair-value model; strategy C entry band 60–180 s
+**Decision (Ian):** approve the average-aware fair-value model from `docs/s0-research.md` §7 (now in `spec.md`
+"Fair-value model") and set strategy C's entry band to **60–180 s before close**.
+**Evidence:** S0 found settlement = 60-s BRTI average before close, target = 60-s average before open. The
+single-print model overstates late-window uncertainty (e.g. $30 ahead with 30 s left: 0.89 naive vs ≈1.00
+average-aware). Below 60 s, the remaining uncertainty is about the size of our Coinbase-vs-BRTI proxy error (~$5 median).
+**Consequence:** S1/S2 use this model for C and D. C does not enter with < 60 s left. Recorded before any strategy
+results were looked at.
+**Not decided here:** a separate "< 60 s" C variant; S1 fill assumption; risk-cap scope in paper; second BTC
+source; go-live gate (all still pending, s0-research §9).

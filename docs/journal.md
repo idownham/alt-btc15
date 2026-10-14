@@ -42,3 +42,10 @@ and in tracking BRTI well, not in "favorites usually win".
 
 **AI use + Ian's judgment:** Claude did the API research, the measurements and the code. *Pending:* Ian to review
 the findings and the §9 proposals (accept / revise / reject).
+
+### 2026-10-13 (later) — Ian's review of S0, part 1 ⭐ evidence → decision → consequence
+**Decision:** Ian approved the average-aware model and the 60–180 s entry band for C (decisions.md, same date).
+**Evidence → consequence:** settlement averaging (S0 §1, §7) → the spec's model replaced → C no longer trades the final
+minute, where our price proxy, not BTC volatility, would decide the edge.
+**AI use + Ian's judgment:** Claude proposed the model and band; Ian **accepted** both. The other S0 proposals
+(fill assumption, cap scope, second BTC source, < 60 s variant) are still open.
