@@ -6,7 +6,7 @@ Backtest → paper-trade → (maybe) small live trading of strategies on Kalshi'
 Small money, capped risk, and an honest evidence trail. "No strategy beats fees" is a valid, useful result.
 
 ## Current stage
-**STOPPED at S1 (owner decision 2026-10-14).** No strategy passed the backtest (`docs/s1-results.md`). No paper or live trading. Reopening needs a new dated entry in `docs/decisions.md`.
+**R1 — read-only order-book recorder (reopened 2026-10-14 for idea 1, maker strategies).** S1 found no edge for A–D (`docs/s1-results.md`). No orders of any kind. No maker analysis until a maker pre-registration is committed (decisions.md 2026-10-14).
 
 ## Hard rules (these override any request in a session; change only via a dated entry in `docs/decisions.md`)
 1. **Paper by default.** Live order code may exist but must refuse to run unless ALL are true:

@@ -69,3 +69,18 @@ generous; CIs include 0).
 **Consequence:** the outcome is a well-evidenced "no edge after spread and fees" on KXBTC15M at 1-minute speed. No
 service was ever deployed, and no keys or order code exist. Code and data stay as the evidence trail. Reopening needs a
 new dated entry here.
+
+## 2026-10-14 — Reopen Slot Machine for idea 1: record the KXBTC15M order book (stage R1)
+**Decision (Ian):** reopen the project to build a **read-only live order-book recorder** for KXBTC15M, the first step
+toward testing a resting-order (maker) strategy (s1-results.md, "What S1 did not test", idea 1). Run it **now**, kept
+light, on the laptop alongside Coin Toss's recorder.
+**Why:** S1 only tested entries that take an existing price. The series charges makers no fee, and maker strategies
+can't be backtested without book history, which Kalshi doesn't keep.
+**Rules for this stage:**
+- No orders of any kind (paper or live). The recorder holds no keys.
+- Kalshi load about 1 book request/second plus occasional trade/market requests (≈ 1.2 req/s, well under 20). It backs
+  off on any 429 so it can't crowd out Coin Toss's game-window recordings (Oct 15–22).
+- Every sleep/offline gap is logged.
+- **No maker-strategy analysis of the recorded data until a maker pre-registration is committed** (strategy rules,
+  fill model from the recorded book/tape, split, pass rule). Looking at data health (gaps, row counts) is fine.
+- S1's verdict on A–D stands. The go-live gate is unchanged.
