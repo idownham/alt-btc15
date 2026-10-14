@@ -1,0 +1,10 @@
+{
+  "chosen": {
+    "A": "mom60",
+    "B": "mom15 +5c stop=none limit=1m",
+    "C": "margin=0c L=5",
+    "D": "fade margin=5c L=15"
+  },
+  "train_windows": 8396,
+  "commit": "d37db63"
+}
