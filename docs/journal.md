@@ -110,3 +110,23 @@ recommendation to stop and declined the optional D paper run.
 **Work:** one-page project summary for the class: `docs/class-summary.md` (question, timeline with commit links, the four
 evidence → decision → consequence steps, results, lessons, AI use + Ian's judgment). Drawn only from this journal,
 decisions.md and git history.
+
+---
+
+## 2026-10-14 — Reopened for idea 1; R1 order-book recorder built and running ⭐ evidence → decision → consequence
+
+**Evidence → decision → consequence:** S1 tested only entries that take an existing price. The series charges makers no
+fee, and Kalshi keeps no book history (s1-results "What S1 did not test") → Ian reopened the project for idea 1 and
+chose to start recording now, kept light (decisions.md 2026-10-14) → a read-only recorder now builds the book history
+that a maker test needs. No maker analysis until a pre-registration is committed.
+
+**Work:** `src/slot/recorder.py` + 9 tests (65 total pass). Each second it records one book snapshot (top 20 levels per
+side) and one Coinbase BTC price. Every 10 s it fetches the trade tape. After each window it records the result. Gaps,
+errors and 429 pauses are logged; SIGTERM stops it cleanly (found in testing: a background process ignored Ctrl-C).
+launchd file written but **not installed**. Started 2026-10-14 15:04 CDT as a background process.
+
+**Observation (first minutes):** 77 snapshots in 76 s at ~48 ms per request, 0 errors, 0 rate-limit pauses. The tape is
+heavy (~48k trades per window), so storage is ~600 B per trade, an estimated 1–3 GB/day. 656 GB is free.
+
+**AI use + Ian's judgment:** Claude listed the three untested ideas and recommended idea 1 with a delayed start (after
+Coin Toss's recordings, Oct 22). Ian **accepted** idea 1 and **overrode** the timing: run now, kept light.
