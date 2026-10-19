@@ -176,6 +176,8 @@ table like any other gap (not checked against the usable-window rules here).
 **Work:** health-only check of the R1 recording (no prices, P&L or strategy numbers looked at). Agent running; newest
 snapshot 0.2 s old; ~200 MB in 3.5 h (≈ 1.4 GB/day), 657 GB free. A **network outage from about 17:34 to 18:00 CDT**
 (DNS failures, longest gap 962 s) is in the `gaps` table. The recorder recovered by itself.
+*Correction 2026-10-15: this was not a network outage. The Mac was asleep with the lid closed ('Clamshell Sleep' at
+17:34:57 on battery, pmset log). The DNS errors came as the network came back on wake. See the 2026-10-15 entry.*
 **Evidence:** snapshots were ~1.055 s apart (≈ 57/min), so even a window with no outage would cover only ~94.8% of its
 seconds, under the pre-registration's ≥ 95% usable-window rule. The first in-range window
 (`KXBTC15M-26OCT141630`) has no result because its result read fell inside the rename downtime.
@@ -186,3 +188,20 @@ by the rule as written. `…141630` will count as unusable.
 **Clarifications:** Claude walked Ian through all seven. Ian **accepted** all seven as written (decisions.md).
 **AI use + Ian's judgment:** Claude found the drift and the missing result during the health check and recommended both
 fixes. Ian **accepted** the schedule fix and **rejected** the backfill.
+
+### 2026-10-15 → 10-18 — Laptop sleep is costing most of the R1 recording ⭐ evidence → decision (pending) → consequence
+**Evidence (health only, no prices or results looked at):** HQ flagged it on Oct 15 (cross-project checkpoint, Ian approved
+sending it), and Claude checked it here. pmset shows 'Clamshell Sleep' whenever the lid closes on battery (first at
+17:34:57 on Oct 14, which corrects the "network outage" above), plus repeated maintenance DarkWakes overnight. The system
+sleep setting is 1 min, and the recorder holds no keep-awake. Book-snapshot coverage of each Chicago day (share of 86,400 s):
+Oct 15 **24.3%**, Oct 16 **52.7%**, Oct 17 **2.6%**, Oct 18 **39.2%** (through 22:23). From Oct 14 19:00 to Oct 15 11:13 CT it
+was 16.8%, with 13.4 h in the `gaps` table.
+**Consequence for the pre-registration:** most windows since Oct 14 evening will fail the ≥ 95% coverage rule, so the
+900-usable-window minimum will very likely force the end-date extension (in whole days, counting usable windows only,
+as written). The rule is unchanged.
+**Decision (pending):** Claude gave three options: a small separate server, the laptop kept open and plugged in with a
+keep-awake hold, or accepting the gaps. Ian replied that he is "working on upgrading server". **No dated decision yet.**
+Note: CLAUDE.md says not to deploy to Osprey's droplet, so if the plan is to host R1 on an upgraded `alt-arb`, that
+needs a dated decision entry (and an HQ note) first.
+**AI use + Ian's judgment:** HQ found the sleep cause and Claude confirmed it from pmset and the DB. Ian chose to move
+toward a server. Details to be recorded when he decides.
