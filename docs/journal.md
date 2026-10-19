@@ -205,3 +205,13 @@ Note: CLAUDE.md says not to deploy to Osprey's droplet, so if the plan is to hos
 needs a dated decision entry (and an HQ note) first.
 **AI use + Ian's judgment:** HQ found the sleep cause and Claude confirmed it from pmset and the DB. Ian chose to move
 toward a server. Details to be recorded when he decides.
+
+### 2026-10-18 — Decision: move the R1 recorder to the shared droplet ⭐ evidence → decision → consequence
+**Evidence:** laptop sleep (entry above) → **Decision:** Ian chose to run R1 on the resized `alt-arb` droplet (HQ
+decision 2026-10-15; decisions.md 2026-10-18) → **Consequence:** CLAUDE.md's infrastructure rule is updated. The move
+plan is in `docs/r1-droplet-move.md`: own user, folder and systemd unit; overlap then cutover; a merge rule that never mixes hosts within a window.
+Nothing is deployed until the resize is confirmed.
+**Observation:** the disk check found the trade tape is ≈ 98% of storage (≈ 1.0 GB/day) and is backfilled after gaps,
+so the DB grows at full rate even when book coverage is low. This corrects the day-one 1.4 GB/day estimate (a busy afternoon).
+**AI use + Ian's judgment:** Claude offered a separate VPS or the upgraded droplet. Ian **chose** the droplet, in line with
+the HQ decision. Claude measured disk use and wrote the move plan.

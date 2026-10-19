@@ -110,3 +110,16 @@ Window `KXBTC15M-26OCT141630` (the first in the data range) has no result: its r
 **Consequence:** the recorder was restarted 2026-10-14 18:40:30 CDT (stop/start events logged; the ~1 s pause is under the 5 s gap threshold). Windows recorded before the fix keep
 their real coverage and are judged by the ≥ 95% rule as written. The rule is unchanged. `KXBTC15M-26OCT141630` will
 count as unusable (no result). Future restarts that straddle a result read can lose that window's result the same way.
+
+## 2026-10-18 — R1 recorder moves to Osprey's droplet `alt-arb` (replaces "do not deploy to Osprey's droplet")
+**Decision (Ian):** "I'm upgrading the alt-arb droplet and want R1 to run there." This follows the HQ decision of
+2026-10-15 (one shared server, `alt-arb` resized to 1 vCPU / 2 GB / 50 GB). It replaces the CLAUDE.md line "Do not
+deploy to Osprey's droplet" and the 2026-10-13 laptop-only entry, for the **read-only recorder only**.
+**Evidence:** laptop sleep cost most of the recording: book coverage per Chicago day was Oct 15 24%, Oct 16 53%, Oct 17 3%,
+Oct 18 39% (journal). Measured disk use is ≈ 1.0 GB/day (trade tape ≈ 98%), so the R1 range plus a likely extension to
+around Oct 30 – Nov 3 fits in 50 GB with ≥ 20 GB of headroom (`docs/r1-droplet-move.md`).
+**Rules on the droplet:** own Linux user, folder and systemd unit. Read-only, no keys, no Polymarket calls. 429
+back-off kept. Osprey's files and services untouched. A live phase still needs its own server and keys.
+**Consequence:** deploy after Ian confirms the resize is finished. Laptop and droplet overlap for ≥ 1 window, then the
+laptop agent stops. The cutover, overlap and any gap get logged here. The pre-registration's rules are unchanged and
+are applied to the merged data as written.

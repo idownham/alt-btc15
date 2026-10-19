@@ -31,12 +31,14 @@ Small money, capped risk, and an honest evidence trail. "No strategy beats fees"
 8. **Money as Decimal or integer cents**, never float.
 
 ## Infrastructure
-- **Runs on Ian's laptop (macOS) for now** — owner decision 2026-10-13. Own venv, own launchd agent when it runs
-  continuously. It shares the laptop (and its IP) with Coin Toss's recorder: keep Kalshi reads modest and never
-  interfere with Coin Toss's launchd agent, files, or recording windows.
-- Laptop sleep/offline = missed windows. That's acceptable in paper mode; log every gap so results stay honest.
-- Do not deploy to Osprey's droplet. **Live phase gets its own small server** (separate box, separate keys) —
-  decided at the go-live gate, not before.
+- **R1 recorder moves to Osprey's droplet `alt-arb`** (owner decision 2026-10-18; HQ decision 2026-10-15; plan in
+  `docs/r1-droplet-move.md`). Until Ian confirms the droplet resize and the move is done, it runs on the laptop (launchd).
+  On the droplet: own Linux user, own folder (`/opt/alt-btc15`), own systemd unit, read-only, **no keys**, **no Polymarket
+  calls** (Osprey only), and never touch Osprey's (or Coin Toss's) user, files or services. Kalshi's IP limit is shared,
+  so keep the 429 back-off.
+- Laptop sleep/offline = missed windows. Log every gap so results stay honest.
+- **Live phase gets its own small server** (separate box, separate keys), decided at the go-live gate, not before. The
+  shared droplet never holds keys or places orders.
 - BTC price data: public exchange APIs (e.g., Coinbase) — no keys.
 
 ## Conventions
