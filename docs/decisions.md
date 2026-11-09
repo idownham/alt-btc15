@@ -123,3 +123,12 @@ back-off kept. Osprey's files and services untouched. A live phase still needs i
 **Consequence:** deploy after Ian confirms the resize is finished. Laptop and droplet overlap for ≥ 1 window, then the
 laptop agent stops. The cutover, overlap and any gap get logged here. The pre-registration's rules are unchanged and
 are applied to the merged data as written.
+
+## 2026-11-08 — R1 recorder cut over to the droplet
+
+**Decision (Ian, 2026-11-08):** after resizing `alt-arb` to 2 GB / 50 GB, Ian asked an HQ session to do the move in
+`docs/r1-droplet-move.md` (not a Slot Machine session; HQ decisions 2026-11-08).
+**Done:** the overlap and cutover followed the plan. **T = 2026-11-09 04:45:00 UTC.** Both hosts recorded the 04:45–05:00
+window identically (895/900 s). The laptop agent was unloaded at 05:01:38 UTC. No prices or results were looked at.
+**Unchanged:** the pre-registration, its ≥ 95% coverage rule, the 900-usable-window minimum and the end-date extension
+rule. The laptop DB is kept for the merge.

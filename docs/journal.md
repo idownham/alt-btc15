@@ -215,3 +215,26 @@ Nothing is deployed until the resize is confirmed.
 so the DB grows at full rate even when book coverage is low. This corrects the day-one 1.4 GB/day estimate (a busy afternoon).
 **AI use + Ian's judgment:** Claude offered a separate VPS or the upgraded droplet. Ian **chose** the droplet, in line with
 the HQ decision. Claude measured disk use and wrote the move plan.
+
+### 2026-10-19 → 2026-11-08 — Laptop recording, coverage by day (backfilled 2026-11-08)
+*Reconstructed on 2026-11-08 from the laptop DB (`books`, one snapshot a second when awake) and `launchd.err.log`.
+Health only: no prices or results looked at. No commits were made in this period.*
+**Observation:** book coverage per day (share of 86,400 s; days are UTC−6, so before Nov 1 they're off by an hour from
+Chicago time): Oct 19 2.1% · Oct 20 43.2% · Oct 21 70.5% · Oct 22 34.0% · Oct 23 1.7% · Oct 24 24.3% · Oct 25 78.0% ·
+Oct 26 72.2% · Oct 27 94.4% · Oct 28 72.3% · Oct 29 13.4% · Oct 30 4.9% · Oct 31 20.9% · Nov 1 17.4% · Nov 2 46.5% ·
+Nov 3 46.8% · Nov 4 86.8% · Nov 5 33.1% · Nov 6 63.8% · Nov 7 98.0% · Nov 8 52.1%. The cause is the same as Oct 15–18:
+laptop sleep (the log's gaps add up to ~3–20 h a day from Oct 31). At the move the laptop DB held 967,803 book snapshots,
+88.5 M tape trades and 2,232 windows with a result. It's 23 GB on disk.
+**Consequence:** under the pre-registration's own rule, the end date keeps extending until 900 usable windows exist. The
+number of usable windows hasn't been counted here.
+
+### 2026-11-08 — R1 recorder moved to the shared droplet ⭐ evidence → decision → consequence
+**Evidence:** the coverage above. **Decision:** Ian resized the droplet to 1 vCPU / 2 GB / 50 GB ($12/mo) and asked an HQ
+session to run the move (decisions.md 2026-11-08). **Work:** user `altbtc15`, `/opt/alt-btc15` from a git bundle at
+`918700b` (adds the systemd unit), 90 tests passed, `alt-btc15-recorder` started 2026-11-09 04:38:48 UTC.
+**Test:** the 04:45–05:00 UTC overlap window had 895/900 s on both hosts, 0 gaps, and on the droplet 0 errors and 0
+rate-limit pauses. **Cutover T = 04:45:00 UTC.** The laptop agent was unloaded at 05:01:38 UTC. The deployment log is in
+`docs/r1-droplet-move.md`.
+**Consequence:** recording no longer depends on the laptop. The droplet's DB grows ~1.0–1.5 GB/day against 44 GB free.
+**AI use + Ian's judgment:** Claude (HQ chat) did the deploy, the overlap check and these records. Ian chose the $12 plan and
+asked for the move. *Ian's judgment: (to fill in).*

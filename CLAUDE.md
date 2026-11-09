@@ -31,8 +31,10 @@ Small money, capped risk, and an honest evidence trail. "No strategy beats fees"
 8. **Money as Decimal or integer cents**, never float.
 
 ## Infrastructure
-- **R1 recorder moves to Osprey's droplet `alt-arb`** (owner decision 2026-10-18; HQ decision 2026-10-15; plan in
-  `docs/r1-droplet-move.md`). Until Ian confirms the droplet resize and the move is done, it runs on the laptop (launchd).
+- **R1 recorder runs on the shared droplet `alt-arb` since 2026-11-09** (cutover T = 04:45 UTC; owner decision 2026-10-18;
+  HQ decision 2026-10-15; plan and log in `docs/r1-droplet-move.md`): `alt-btc15-recorder.service`, user `altbtc15`,
+  `/opt/alt-btc15`, DB `/opt/alt-btc15/data/recorder/book.sqlite`. The laptop launchd agent is unloaded, and the laptop DB
+  is kept as is for the merge.
   On the droplet: own Linux user, own folder (`/opt/alt-btc15`), own systemd unit, read-only, **no keys**, **no Polymarket
   calls** (Osprey only), and never touch Osprey's (or Coin Toss's) user, files or services. Kalshi's IP limit is shared,
   so keep the 429 back-off.

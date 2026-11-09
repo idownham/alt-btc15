@@ -1,7 +1,7 @@
 # R1 recorder: move from the laptop to the `alt-arb` droplet — plan
 
 *Written 2026-10-18 (CDT). Owner decision: HQ `docs/decisions.md` 2026-10-15 and this project's `docs/decisions.md`
-2026-10-18. **Not deployed yet.** Deployment waits until Ian confirms the droplet resize is finished.*
+2026-10-18. **Deployed 2026-11-09** (after Ian resized the droplet on 2026-11-08). See "Deployment log" at the end.*
 
 ## Why
 The laptop sleeps when its lid closes and after 1 idle minute. Book coverage per Chicago day was Oct 15 24%, Oct 16 53%,
@@ -54,3 +54,14 @@ A fresh disk check is part of the deploy.
 3. Install the systemd unit (`scripts/alt-btc15-recorder.service`, to be added) with `--db /opt/alt-btc15/data/recorder/book.sqlite`.
 4. Start it, then follow steps 1–2 of "Bringing the data together".
 5. Update CLAUDE.md's infrastructure section, the README and the journal, and tell HQ (HQ's CLAUDE.md "Running services").
+
+## Deployment log (2026-11-09, from an HQ session at Ian's request)
+- Resize checked: 1 vCPU / 2 GB / 50 GB (48 GB filesystem, 44 GB free), NTP synchronized, Osprey's scanner active.
+- The repo is private and the server had no deploy key yet, so `/opt/alt-btc15` was cloned from a git bundle of `main` at
+  `918700b` (which adds `scripts/alt-btc15-recorder.service`). `origin` then points at GitHub, and a read-only deploy key
+  for user `altbtc15` was generated for Ian to add. 90 tests passed on the server.
+- The droplet recorder started 04:38:48 UTC. **Overlap:** both hosts recorded the 04:45–05:00 UTC window: 895 snapshots
+  each over 895 distinct seconds (99.4%), 0 gaps. On the droplet: 0 errors, 0 rate-limit pauses.
+- **Cutover T = 2026-11-09 04:45:00 UTC** (the first window the droplet recorded in full). The laptop agent was unloaded at
+  05:01:38 UTC. The laptop DB stays as is. Merge rules (above) unchanged: books/btc from the laptop before T, from the droplet from T.
+- Not yet done: the daily < 5 GB free-disk check is covered by HQ health checks for now, not a droplet timer.
