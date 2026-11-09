@@ -1,0 +1,22 @@
+# R1 order-book recorder on the shared droplet `alt-arb` (plan: docs/r1-droplet-move.md).
+# Read-only: Kalshi public REST + Coinbase public ticker, no keys, no Polymarket.
+# Install: cp to /etc/systemd/system/, then systemctl daemon-reload && systemctl enable --now alt-btc15-recorder
+# Logs:    journalctl -u alt-btc15-recorder -f
+[Unit]
+Description=alt-btc15 R1 recorder (read-only: KXBTC15M order book, trade tape, BTC price)
+After=network-online.target time-sync.target
+Wants=network-online.target
+
+[Service]
+User=altbtc15
+WorkingDirectory=/opt/alt-btc15
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/alt-btc15/.venv/bin/python -m slot.recorder run --db /opt/alt-btc15/data/recorder/book.sqlite
+Restart=always
+RestartSec=5
+# The recorder stops cleanly on SIGTERM.
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
