@@ -19,7 +19,7 @@ H=$(grep '^DROPLET_HOST=' "$HERE/../project-osprey/.env" | cut -d= -f2-)
 DB=/opt/alt-btc15/data/recorder/book.sqlite
 CHUNK=2000000
 
-remote() { ssh -o BatchMode=yes -o ServerAliveInterval=30 "$H" "$@"; }
+remote() { ssh -n -o BatchMode=yes -o ServerAliveInterval=30 "$H" "$@"; }
 
 if [[ ! -s "$OUT/marks.txt" ]]; then
   remote "sqlite3 -readonly $DB \"select 'books', max(rowid) from books; select 'trades', max(rowid) from trades;
