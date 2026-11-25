@@ -6,7 +6,7 @@ Backtest → paper-trade → (maybe) small live trading of strategies on Kalshi'
 Small money, capped risk, and an honest evidence trail. "No strategy beats fees" is a valid, useful result.
 
 ## Current stage
-**R1 — read-only order-book recorder (reopened 2026-10-14 for idea 1, maker strategies).** S1 found no edge for A–D (`docs/s1-results.md`). No orders of any kind. No maker analysis until a maker pre-registration is committed (decisions.md 2026-10-14).
+**R1 maker test done (2026-11-25): M1 fails the pre-registered gate, M2 not testable (`docs/r1-results.md`); verdict pending Ian's confirmation.** S1 found no edge for A–D (`docs/s1-results.md`). No orders of any kind. The droplet recorder is still running until Ian decides to stop it; data after 2026-11-10 06:00 UTC is unanalysed.
 
 ## Hard rules (these override any request in a session; change only via a dated entry in `docs/decisions.md`)
 1. **Paper by default.** Live order code may exist but must refuse to run unless ALL are true:

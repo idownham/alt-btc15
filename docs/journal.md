@@ -238,3 +238,28 @@ rate-limit pauses. **Cutover T = 04:45:00 UTC.** The laptop agent was unloaded a
 **Consequence:** recording no longer depends on the laptop. The droplet's DB grows ~1.0–1.5 GB/day against 44 GB free.
 **AI use + Ian's judgment:** Claude (HQ chat) did the deploy, the overlap check and these records. Ian chose the $12 plan and
 asked for the move. *Ian's judgment: (to fill in).*
+
+### 2026-11-25 — R1 maker test run: no edge for resting orders ⭐ evidence → decision → consequence
+**Work:** copied the droplet recording to the laptop and merged it with the laptop DB. Counted usable windows, extended
+the end date, ran train, committed the selection, then ran the test set once. Commits: `e01e16c` (pull + merge script,
+8 synthetic tests), `56151e0` (count script), `5a0434a` (amendment 1 + merge report), `0f412ec` (train + selection),
+then this wrap-up.
+**Evidence:**
+- *Copy:* the droplet DB was 20.8 GB with 20 GB free, so the planned `.backup` on the droplet would have filled its disk.
+  Instead each table was streamed read-only over ssh at low priority. All row counts matched, and the recorder kept running.
+- *Merge:* in the overlap window the two hosts' tapes differ by 96 of 45,498 trades (0.2%), all in 04:46–04:48 UTC.
+  These are real missed trades, not duplicates; the union is kept.
+- *Usable windows:* 347 in the original range. Pushed back by whole days (counts only), the first end with ≥ 900 is
+  2026-11-10 06:00 UTC, with **910**. Train is 606 windows (Oct 14 → Nov 6, all laptop) and test is 304 (Nov 6 → 10, 101
+  from the droplet).
+- *Train:* M1 `margin=3c join` was best (+$0.16/window uncapped, CI −$0.33 to +$0.64). M2 traded in at most 4 windows,
+  because spreads ≥ 2¢ are rare.
+- *Test (once):* M1 capped −$65.12 over 93 windows (CI −$1.79 to +$0.39); uncapped −$143.02 over 304 (−$0.47/window). Fills
+  came +$228 below model value, but adverse selection cost −$371. All three sensitivities lose about the same.
+**Decision → consequence:** under the pre-registered gate, R1 is **not passed** (decisions.md 2026-11-25, pending Ian's
+confirmation). No maker strategy goes to paper trading. Together with S1, Slot Machine has now found no edge for taking
+*or* resting orders on KXBTC15M at ≤ $5. Whether to stop the droplet recorder is Ian's call.
+**AI use + Ian's judgment:** Claude (a session started from HQ at Ian's request) did the copy, merge, counts, amendment,
+runs and write-up. Two calls were made without asking, both recorded before any results: the copy method (forced by
+the droplet's disk space) and using Chicago midnights for "whole days" after DST (moves the end by ≤ 1 h).
+*Ian's judgment: (to fill in).*

@@ -149,3 +149,15 @@ did not match exactly. 45,402 trades were on both tapes, 94 only on the droplet 
 merge keeps the union, as the move plan says. Missing trades can only remove fills, and the other windows are single-host.
 The droplet was copied by streaming each table read-only over ssh, not by `.backup`: the DB was 20.8 GB with 20 GB free,
 so a backup on the droplet would have filled its disk under the live recorder. All row counts matched.
+
+## 2026-11-25 — R1 maker test result: M1 fails, M2 not testable (verdict pending Ian's confirmation) ⭐ evidence → decision → consequence
+**Evidence (`docs/r1-results.md`; test run once at `0f412ec` on the last 304 of 910 usable windows):** the variant chosen on
+train, M1 `margin=3c join`, lost on test. Capped net **−$65.12** over 93 traded windows (211 refused by the $25/day cap),
+mean −$0.70 (95% CI −$1.79 to +$0.39). Uncapped: −$143.02 over 304 windows, −$0.47 (CI −$1.05 to +$0.11). Fills were bought
+below model value (+$228 "spread earned"), but adverse selection cost more (−$371). All three fill-model sensitivities lose
+about the same. M2 never reached 50 traded windows on train, because spreads ≥ 2¢ almost never occur, so it was not tested.
+**Decision (pre-registered gate; proposed by Claude, to be confirmed by Ian):** R1 is **not passed**. No maker strategy
+goes to paper trading. *Ian's confirmation: (to fill in).*
+**Consequence:** a well-evidenced "no edge" for resting orders on KXBTC15M at ≤ $5. The recorder has done its job for this
+test. Stopping or keeping it is Ian's decision (≈ 2 weeks of droplet disk left). The droplet data after 2026-11-10 06:00 UTC
+is unanalysed, so it could serve as fresh out-of-sample data if a new, separately pre-registered maker idea is ever tested.
