@@ -1,0 +1,57 @@
+{
+  "t_cutover_utc": "2026-11-09T04:45:00+00:00",
+  "built_utc": "2026-11-25T07:16:21+00:00",
+  "windows": {
+    "laptop": 2236,
+    "droplet": 1526,
+    "merged": 3759,
+    "results_filled_from_droplet": 1,
+    "results_filled_from_laptop": 0
+  },
+  "books": {
+    "laptop_kept": 968305,
+    "laptop_dropped_from_T": 969,
+    "droplet_kept": 1344996,
+    "droplet_dropped_before_T": 371,
+    "merged": 2313301
+  },
+  "btc": {
+    "laptop_kept": 1001381,
+    "laptop_dropped_from_T": 999,
+    "droplet_kept": 1385941,
+    "droplet_dropped_before_T": 371,
+    "merged": 2387322
+  },
+  "trades": {
+    "laptop": 88603874,
+    "droplet": 74038844,
+    "merged": 162536694,
+    "windows_on_both_tapes": {
+      "KXBTC15M-26NOV082345-45": {
+        "both": 55521,
+        "laptop_only": 0,
+        "droplet_only": 0,
+        "field_mismatch": 0
+      },
+      "KXBTC15M-26NOV090000-00": {
+        "both": 45402,
+        "laptop_only": 2,
+        "droplet_only": 94,
+        "field_mismatch": 0
+      }
+    },
+    "cutover_window": "KXBTC15M-26NOV090000-00",
+    "cutover_window_tapes_match": false
+  },
+  "gaps": {
+    "laptop": 2661,
+    "droplet": 28,
+    "laptop_ending_after_T": 0,
+    "droplet_starting_before_T": 0
+  },
+  "events": {
+    "laptop": 19104,
+    "droplet": 48,
+    "laptop_trade_errors_from_T": 0
+  }
+}

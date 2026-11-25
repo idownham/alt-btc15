@@ -136,3 +136,19 @@ as written (decisions.md)**, before any analysis of recorded data.
    as S1. The 95% CI in the pass rule is computed on the capped traded windows (the official numbers are capped).
 7. **Guard:** `slot.maker` refuses to read the real recording before 2026-10-28 05:00 UTC. `--end` can only move the end
    later, and only after an amendment naming the new date is written here.
+
+## Amendment 1 — 2026-11-25: data range extended to 2026-11-10 06:00 UTC (the §1 minimum-size rule)
+*Written and committed **before any fill, P&L or strategy result was computed**. Only usable-window counts were looked at.*
+- **Reason:** the §1 rule. The original range (windows closing by 2026-10-28 05:00 UTC) has **347 usable windows** of
+  1,158 in the windows table (book coverage 786, BTC missing 15, gap in quoting 8, no result 1, tape error 1). Laptop
+  sleep caused the shortfall (journal 2026-10-15 → 11-08). 347 is under the 900 minimum.
+- **Extension:** the end was pushed back one whole day at a time, counting usable windows only
+  (`scripts/r1_count_extension.py`, output `docs/r1-usable-counts.json`). Each candidate end is a Chicago midnight,
+  like the original end, so it is 06:00 UTC after DST ended on 2026-11-01. Fixed before counting; it moves the
+  end by one hour at most. The first end with ≥ 900 is **2026-11-10 06:00 UTC** (midnight 2026-11-10 Chicago):
+  **910 usable windows** of 2,334 in the table (book coverage 1,363, BTC missing 38, gap in quoting 20, no result 1,
+  tape error 2). The previous end (2026-11-09 06:00 UTC) had 814.
+- **Data:** the merged laptop + droplet DB, built by the rules in `docs/r1-droplet-move.md` (cutover T = 2026-11-09
+  04:45 UTC; `src/slot/merge.py`, tested on synthetic data first; report `docs/r1-merge-report.json`).
+- **Split:** in time order, train = the first 606 usable windows and test = the last 304.
+- **Unchanged:** everything else (usable-window rules, fill model, fair value, variants, selection and pass rules, caps).

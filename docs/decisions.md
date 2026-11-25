@@ -132,3 +132,20 @@ are applied to the merged data as written.
 window identically (895/900 s). The laptop agent was unloaded at 05:01:38 UTC. No prices or results were looked at.
 **Unchanged:** the pre-registration, its ≥ 95% coverage rule, the 900-usable-window minimum and the end-date extension
 rule. The laptop DB is kept for the merge.
+
+## 2026-11-25 — R1 data range extended to 2026-11-10 06:00 UTC (pre-registration amendment 1) ⭐ evidence → decision → consequence
+**Evidence (usable-window counts only; no fills or P&L computed):** the merged recording has **347 usable windows** in the
+original range (to 2026-10-28 05:00 UTC), under the 900 minimum. Laptop sleep is the cause (786 of the 811 failures
+are book coverage < 95%).
+**Decision (the pre-registered rule, applied by Claude at Ian's request for the R1 run):** push the end back in whole
+days, Chicago midnights like the original end, until ≥ 900 usable windows. The first such end is **2026-11-10 06:00 UTC:
+910 usable** (814 the day before). Train = first 606, test = last 304. Recorded in `docs/r1-maker-preregistration.md`
+amendment 1 and committed before any fills were run.
+**Consequence:** the test set is the last 304 usable windows, about Nov 7–10, and is partly from the droplet. The droplet
+recording after 2026-11-10 06:00 UTC is not used by this test.
+**Data note (from the merge, `docs/r1-merge-report.json`):** in the cutover window both hosts recorded the tape, and they
+did not match exactly. 45,402 trades were on both tapes, 94 only on the droplet and 2 only on the laptop, all between
+04:46 and 04:48 UTC, with no same-trade duplicates under different IDs. So a live tape can miss about 0.2% of trades. The
+merge keeps the union, as the move plan says. Missing trades can only remove fills, and the other windows are single-host.
+The droplet was copied by streaming each table read-only over ssh, not by `.backup`: the DB was 20.8 GB with 20 GB free,
+so a backup on the droplet would have filled its disk under the live recorder. All row counts matched.
