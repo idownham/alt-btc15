@@ -269,3 +269,14 @@ the droplet's disk space) and using Chicago midnights for "whole days" after DST
 **Work:** the confirmation is recorded in decisions.md, r1-results.md and CLAUDE.md. The stop on the droplet was **not** carried
 out: the session's permission check blocked `systemctl stop/disable`, so it waits for Ian's direct approval or Ian runs it.
 **AI use + Ian's judgment:** Claude recorded the decision. Ian **confirmed** the verdict Claude proposed.
+
+### 2026-11-25 (14:35 UTC) — R1 recorder stopped and disabled
+**Work:** in the HQ chat Ian chose "Stop it here", and the HQ session ran `systemctl stop` + `disable alt-btc15-recorder` at
+14:35:10 UTC. Then the Slot Machine session checked the unit (**inactive, disabled**; last book 14:35:09 UTC; clean `stop`
+event), pulled the tail recorded since the 05:53 UTC pull to the laptop (row counts match the droplet exactly), and ran
+`PRAGMA quick_check` read-only at low priority: **ok**. Droplet disk 20 GB free.
+**Data:** the original DB stays on the droplet (`/opt/alt-btc15/data/recorder/`). The laptop holds a full copy (snapshot +
+tail) plus the merged R1 DB. Nothing deleted. Details are in decisions.md.
+**Consequence:** Slot Machine has no running services. Its evidence trail is complete: S1 (no taker edge) and R1 (no maker
+edge), both on pre-registered gates.
+**AI use + Ian's judgment:** Ian decided the stop. HQ ran it, and Claude checked and recorded it. *Ian's judgment: (to fill in).*

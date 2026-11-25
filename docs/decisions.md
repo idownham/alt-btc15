@@ -166,8 +166,14 @@ is unanalysed, so it could serve as fresh out-of-sample data if a new, separatel
 **Decision (Ian, 2026-11-25, HQ chat):** "Confirm, stop recorder". The R1 verdict stands as written (M1 fails, M2 not testable), and the
 R1 recorder on the droplet (`alt-btc15-recorder`) is to be stopped and disabled. Nothing is deleted: the droplet DB stays in
 `/opt/alt-btc15/data/recorder/`.
-**Status:** *stop not yet carried out.* The Slot Machine session's attempt to run `systemctl stop/disable` on the droplet was
-blocked by its permission check, so it needs Ian's direct approval or Ian runs it. The shutdown time, unit state and DB check
-get recorded here when it is done.
-**Data:** the laptop holds the merged analysis DB and a droplet copy up to 2026-11-25 05:53 UTC. Until a tail pull is made,
-the droplet is the only copy of anything recorded after that.
+**Done, 2026-11-25 14:35:10 UTC:** in the HQ chat Ian chose "Stop it here", and the HQ session ran `systemctl stop` then
+`systemctl disable alt-btc15-recorder`. (The Slot Machine session's own attempt had been blocked by its permission check.)
+Checked afterwards from the Slot Machine session: the unit is **inactive and disabled**. Last book snapshot 14:35:09 UTC,
+last event `stop` 14:35:10 UTC. The WAL was checkpointed on shutdown. Totals: 1,561 windows, 75.4 M trades, 1.38 M book
+snapshots. `PRAGMA quick_check` on the droplet DB (read-only, nice 19 / idle I/O, 14:37–14:55 UTC): **ok**. Droplet disk
+20 GB free.
+**Where the data lives (nothing deleted):** droplet `/opt/alt-btc15/data/recorder/book.sqlite` (21.2 GB, the original). On the
+laptop, in gitignored `data/recorder/`: the original laptop DB `book.sqlite`; the droplet copy up to the 05:53 UTC pull
+`droplet-2026-11-25.sqlite`; the tail from 05:53 to the stop `droplet-tail-2026-11-25.sqlite` (row counts equal the droplet's
+rowid deltas: 30,704 books, 1,408,301 trades, 31,294 btc, 2 events; plus the full final windows table, 1,560 of 1,561 with a
+result); and the R1 analysis DB `r1-merged.sqlite`. So every droplet row now exists on the laptop too.
