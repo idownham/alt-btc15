@@ -13,7 +13,7 @@ merged laptop + droplet recording (`docs/r1-merge-report.json`). Paper analysis 
 | M2 pair capture | none: no variant reached 50 traded windows on train | – | – | **not tested** |
 
 Pass rule (pre-registered): capped test net > 0 **and** the 95% CI of mean P&L per traded window entirely above 0.
-M1 fails both parts. The verdict is Claude's reading of the gate; **Ian confirms it** (decisions.md 2026-11-25).
+M1 fails both parts. **Confirmed by Ian, 2026-11-25:** "Confirm, stop recorder" (decisions.md 2026-11-25).
 
 ## Data and sample
 

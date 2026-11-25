@@ -157,7 +157,17 @@ mean −$0.70 (95% CI −$1.79 to +$0.39). Uncapped: −$143.02 over 304 windows
 below model value (+$228 "spread earned"), but adverse selection cost more (−$371). All three fill-model sensitivities lose
 about the same. M2 never reached 50 traded windows on train, because spreads ≥ 2¢ almost never occur, so it was not tested.
 **Decision (pre-registered gate; proposed by Claude, to be confirmed by Ian):** R1 is **not passed**. No maker strategy
-goes to paper trading. *Ian's confirmation: (to fill in).*
+goes to paper trading. **Confirmed by Ian, 2026-11-25:** "Confirm, stop recorder" (HQ chat, relayed by the HQ session).
 **Consequence:** a well-evidenced "no edge" for resting orders on KXBTC15M at ≤ $5. The recorder has done its job for this
 test. Stopping or keeping it is Ian's decision (≈ 2 weeks of droplet disk left). The droplet data after 2026-11-10 06:00 UTC
 is unanalysed, so it could serve as fresh out-of-sample data if a new, separately pre-registered maker idea is ever tested.
+
+## 2026-11-25 — R1 verdict confirmed; stop the droplet recorder
+**Decision (Ian, 2026-11-25, HQ chat):** "Confirm, stop recorder". The R1 verdict stands as written (M1 fails, M2 not testable), and the
+R1 recorder on the droplet (`alt-btc15-recorder`) is to be stopped and disabled. Nothing is deleted: the droplet DB stays in
+`/opt/alt-btc15/data/recorder/`.
+**Status:** *stop not yet carried out.* The Slot Machine session's attempt to run `systemctl stop/disable` on the droplet was
+blocked by its permission check, so it needs Ian's direct approval or Ian runs it. The shutdown time, unit state and DB check
+get recorded here when it is done.
+**Data:** the laptop holds the merged analysis DB and a droplet copy up to 2026-11-25 05:53 UTC. Until a tail pull is made,
+the droplet is the only copy of anything recorded after that.

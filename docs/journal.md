@@ -263,3 +263,9 @@ confirmation). No maker strategy goes to paper trading. Together with S1, Slot M
 runs and write-up. Two calls were made without asking, both recorded before any results: the copy method (forced by
 the droplet's disk space) and using Chicago midnights for "whole days" after DST (moves the end by ≤ 1 h).
 *Ian's judgment: (to fill in).*
+
+### 2026-11-25 (later) — R1 verdict confirmed; recorder stop decided
+**Decision:** Ian confirmed the R1 verdict and decided to stop the recorder: "Confirm, stop recorder" (HQ chat, relayed by the HQ session).
+**Work:** the confirmation is recorded in decisions.md, r1-results.md and CLAUDE.md. The stop on the droplet was **not** carried
+out: the session's permission check blocked `systemctl stop/disable`, so it waits for Ian's direct approval or Ian runs it.
+**AI use + Ian's judgment:** Claude recorded the decision. Ian **confirmed** the verdict Claude proposed.
