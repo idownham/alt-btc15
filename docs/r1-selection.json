@@ -1,0 +1,9 @@
+{
+  "chosen": {
+    "M1": "margin=3c join"
+  },
+  "usable": 910,
+  "train": 606,
+  "end_close_ts": 1794290400,
+  "commit": "5a0434a"
+}
