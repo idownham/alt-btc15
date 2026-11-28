@@ -280,3 +280,11 @@ tail) plus the merged R1 DB. Nothing deleted. Details are in decisions.md.
 **Consequence:** Slot Machine has no running services. Its evidence trail is complete: S1 (no taker edge) and R1 (no maker
 edge), both on pre-registered gates.
 **AI use + Ian's judgment:** Ian decided the stop. HQ ran it, and Claude checked and recorded it. *Ian's judgment: (to fill in).*
+
+## 2026-11-28 — README setup steps (repo is now public)
+**Work:** I added Status, Setup and Reproducing sections to `README.md`. They cover Python 3.11+, the venv and
+install, the tests, the S1 history and backtest, the R1 `maker` count/train/test, and `recorder status`. A note says
+no keys are needed. Ian approved this in HQ ("Yes, fix README"). Checkpoint 3 says each repo has a README with setup steps.
+**Check:** every command is a real CLI in `src/slot/`, and each one's `--help` parses. No secrets, host addresses or
+account details are in the README.
+**AI use + Ian's judgment:** Claude wrote it from the code. *Ian's judgment: (to fill in).*
